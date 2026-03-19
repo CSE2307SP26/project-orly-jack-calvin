@@ -2,8 +2,9 @@
 
 ## Team Members:
 
-* 
-* 
+Orly Stulbach
+Calvin Kapral
+Jack Resin
 * 
 * 
 
