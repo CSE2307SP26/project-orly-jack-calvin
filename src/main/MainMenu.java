@@ -19,7 +19,8 @@ public class MainMenu {
         System.out.println("Welcome to the 237 Bank App!");
         
         System.out.println("1. Make a deposit");
-        System.out.println("2. Exit the app");
+        System.out.println("2. Close the account");
+        System.out.println("3. Exit the app");
 
     }
 
@@ -36,6 +37,10 @@ public class MainMenu {
         switch (selection) {
             case 1:
                 performDeposit();
+                break;
+            case 2:
+                closeAccount();
+                break;
         }
     }
 
@@ -46,6 +51,15 @@ public class MainMenu {
             depositAmount = keyboardInput.nextInt();
         }
         userAccount.deposit(depositAmount);
+    }
+
+    public void closeAccount() {
+        if (userAccount.getBalance() != 0) {
+            System.out.println("Cannot close account with a non-zero balance.");
+        } else {
+            userAccount.close();
+            System.out.println("You have closed your account. Goodbye!");
+        }
     }
 
     public void run() {
