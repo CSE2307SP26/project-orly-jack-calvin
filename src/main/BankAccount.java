@@ -6,6 +6,7 @@ public class BankAccount {
 
     public BankAccount() {
         this.balance = 0;
+        
     }
 
     public void deposit(double amount) {
