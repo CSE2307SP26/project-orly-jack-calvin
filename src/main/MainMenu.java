@@ -19,7 +19,8 @@ public class MainMenu {
         System.out.println("Welcome to the 237 Bank App!");
         
         System.out.println("1. Make a deposit");
-        System.out.println("2. Exit the app");
+        System.out.println("2. Transfer money");
+        System.out.println("3. Exit the app");
 
     }
 
@@ -36,6 +37,10 @@ public class MainMenu {
         switch (selection) {
             case 1:
                 performDeposit();
+                break;
+            case 2:
+                performTransfer();
+                break;
         }
     }
 
@@ -46,6 +51,19 @@ public class MainMenu {
             depositAmount = keyboardInput.nextInt();
         }
         userAccount.deposit(depositAmount);
+    }
+
+    public void performTransfer() {
+        // transfer to new account for now 
+        BankAccount recipient = new BankAccount();
+
+        // prompt user for amount to transfer
+        double transferAmount = -1;
+        while(transferAmount < 0) {
+            System.out.print("How much would you like to transfer: ");
+            transferAmount = keyboardInput.nextInt();
+        }
+        userAccount.transfer(recipient, transferAmount);
     }
 
     public void run() {

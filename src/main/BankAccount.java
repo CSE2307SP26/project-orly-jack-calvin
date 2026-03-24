@@ -6,7 +6,6 @@ public class BankAccount {
 
     public BankAccount() {
         this.balance = 0;
-        
     }
 
     public void deposit(double amount) {
@@ -19,5 +18,14 @@ public class BankAccount {
 
     public double getBalance() {
         return this.balance;
+    }
+
+    public void transfer(BankAccount recipient, double amount) {
+        if(amount > 0 && this.balance >= amount && recipient != null && recipient != this) {
+            this.balance -= amount;
+            recipient.deposit(amount);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 }
