@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-    private static final int EXIT_SELECTION = 4;
-	private static final int MAX_SELECTION = 4;
+  private static final int EXIT_SELECTION = 5;
+	private static final int MAX_SELECTION = 5;
 
 	private BankAccount userAccount;
     private Scanner keyboardInput;
@@ -21,7 +21,8 @@ public class MainMenu {
         System.out.println("1. Make a deposit");
         System.out.println("2. Check Balance");
         System.out.println("3. Withdraw money");
-        System.out.println("4. Exit the app");
+        System.out.println("4. View transaction history");
+        System.out.println("5. Exit the app");
 
     }
 
@@ -44,6 +45,9 @@ public class MainMenu {
                 break;
             case 3:
                 performWithdraw();
+                break;
+            case 4:
+                performTransactionHistory();
                 break;
             case 4:
                 System.out.println("Goodbye!");
@@ -77,6 +81,10 @@ public class MainMenu {
 
     public void checkBalance(){
         System.out.println("Current balance " + userAccount.getBalance());
+    }
+
+    public void performTransactionHistory() {
+        System.out.println(userAccount.transactionHistory());
     }
 
     public void run() {
