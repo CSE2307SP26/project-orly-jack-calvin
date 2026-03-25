@@ -6,6 +6,7 @@ import java.util.List;
 public class BankAccount {
 
     private double balance;
+    private boolean isOpen;
     private List<BankAccount> additionalAccounts;
     private List<String> transactionHistory;
 
@@ -13,19 +14,29 @@ public class BankAccount {
         this.balance = 0;
         this.additionalAccounts = new ArrayList<>();
         this.transactionHistory = new ArrayList<>();
+        this.isOpen = true; 
     }
+        
 
     public void deposit(double amount) {
+        if (!isOpen) {
+            throw new IllegalStateException("Account is closed");
+        }
         if(amount > 0) {
             this.balance += amount;
             this.transactionHistory.add("Deposited: " + amount);
         } else {
-            throw new IllegalArgumentException();
+             throw new IllegalArgumentException();
         }
     }
+  
     public void withdraw(double amount) {
         balance -= amount;
     }   
+
+    public void close() {
+        this.isOpen = false;
+    }
 
     public double getBalance() {
         return this.balance;

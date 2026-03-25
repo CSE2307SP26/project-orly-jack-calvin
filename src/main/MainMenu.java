@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-  private static final int EXIT_SELECTION = 5;
-	private static final int MAX_SELECTION = 5;
+  private static final int EXIT_SELECTION = 6;
+	private static final int MAX_SELECTION = 6;
 
 	private BankAccount userAccount;
     private Scanner keyboardInput;
@@ -22,7 +22,8 @@ public class MainMenu {
         System.out.println("2. Check Balance");
         System.out.println("3. Withdraw money");
         System.out.println("4. View transaction history");
-        System.out.println("5. Exit the app");
+        System.out.println("5. Close account");
+        System.out.println("6. Exit the app");
 
     }
 
@@ -50,6 +51,9 @@ public class MainMenu {
                 performTransactionHistory();
                 break;
             case 5:
+                closeAccount();
+                break;
+            case 6:
                 System.out.println("Goodbye!");
                 break;
         }
@@ -92,6 +96,15 @@ public class MainMenu {
         System.out.println("Added an additional account.");
     }
 
+
+    public void closeAccount() {
+        if (userAccount.getBalance() != 0) {
+            System.out.println("Cannot close account with a non-zero balance.");
+        } else {
+            userAccount.close();
+            System.out.println("You have closed your account. Goodbye!");
+        }
+    }
 
     public void run() {
         int selection = -1;
