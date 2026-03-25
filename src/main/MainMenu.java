@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-  private static final int EXIT_SELECTION = 7;
-	private static final int MAX_SELECTION = 7;
+  private static final int EXIT_SELECTION = 8;
+	private static final int MAX_SELECTION = 8;
 
 	private BankAccount userAccount;
     private Scanner keyboardInput;
@@ -24,7 +24,8 @@ public class MainMenu {
         System.out.println("4. View transaction history");
         System.out.println("5. Close account");
         System.out.println("6. Transfer money");
-        System.out.println("7. Exit the app");
+        System.out.println("7. Add account");
+        System.out.println("8. Exit the app");
 
     }
 
@@ -58,6 +59,9 @@ public class MainMenu {
                 performTransfer();
                 break;
             case 7:
+                performAdditionalAccount();
+                break;
+            case 8:
                 System.out.println("Goodbye!");
                 break;
         }
