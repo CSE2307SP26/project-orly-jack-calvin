@@ -42,6 +42,14 @@ public class BankAccount {
         return this.balance;
     }
 
+    public void transfer(BankAccount recipient, double amount) {
+        if(amount > 0 && this.balance >= amount && recipient != null && recipient != this) {
+            this.balance -= amount;
+            recipient.deposit(amount);
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
     public void addAccount() {
         BankAccount additionalAccount = new BankAccount();
         this.additionalAccounts.add(additionalAccount);

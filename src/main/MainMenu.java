@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-  private static final int EXIT_SELECTION = 6;
-	private static final int MAX_SELECTION = 6;
+  private static final int EXIT_SELECTION = 7;
+	private static final int MAX_SELECTION = 7;
 
 	private BankAccount userAccount;
     private Scanner keyboardInput;
@@ -23,7 +23,8 @@ public class MainMenu {
         System.out.println("3. Withdraw money");
         System.out.println("4. View transaction history");
         System.out.println("5. Close account");
-        System.out.println("6. Exit the app");
+        System.out.println("6. Transfer money");
+        System.out.println("7. Exit the app");
 
     }
 
@@ -54,6 +55,9 @@ public class MainMenu {
                 closeAccount();
                 break;
             case 6:
+                performTransfer();
+                break;
+            case 7:
                 System.out.println("Goodbye!");
                 break;
         }
@@ -104,6 +108,19 @@ public class MainMenu {
             userAccount.close();
             System.out.println("You have closed your account. Goodbye!");
         }
+    }
+
+    public void performTransfer() {
+        // transfer to new account for now 
+        BankAccount recipient = new BankAccount();
+
+        // prompt user for amount to transfer
+        double transferAmount = -1;
+        while(transferAmount < 0) {
+            System.out.print("How much would you like to transfer: ");
+            transferAmount = keyboardInput.nextInt();
+        }
+        userAccount.transfer(recipient, transferAmount);
     }
 
     public void run() {
