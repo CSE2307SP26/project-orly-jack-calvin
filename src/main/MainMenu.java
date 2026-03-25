@@ -49,7 +49,7 @@ public class MainMenu {
             case 4:
                 performTransactionHistory();
                 break;
-            case 4:
+            case 5:
                 System.out.println("Goodbye!");
                 break;
         }
@@ -86,6 +86,12 @@ public class MainMenu {
     public void performTransactionHistory() {
         System.out.println(userAccount.transactionHistory());
     }
+
+    public void performAdditionalAccount() {
+        userAccount.addAccount();
+        System.out.println("Added an additional account.");
+    }
+
 
     public void run() {
         int selection = -1;

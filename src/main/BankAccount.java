@@ -6,10 +6,12 @@ import java.util.List;
 public class BankAccount {
 
     private double balance;
+    private List<BankAccount> additionalAccounts;
     private List<String> transactionHistory;
 
     public BankAccount() {
         this.balance = 0;
+        this.additionalAccounts = new ArrayList<>();
         this.transactionHistory = new ArrayList<>();
     }
 
@@ -29,6 +31,15 @@ public class BankAccount {
         return this.balance;
     }
 
+    public void addAccount() {
+        BankAccount additionalAccount = new BankAccount();
+        this.additionalAccounts.add(additionalAccount);
+        
+    }
+
+    public List<BankAccount> getAdditionalAccounts() {
+        return this.additionalAccounts;
+    }
     public List<String> transactionHistory() {
         return this.transactionHistory;
     }
