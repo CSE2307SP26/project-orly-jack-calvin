@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class MainMenu {
 
     private static final int EXIT_SELECTION = 2;
-	private static final int MAX_SELECTION = 2;
+	private static final int MAX_SELECTION = 4;
 
 	private BankAccount userAccount;
     private Scanner keyboardInput;
@@ -20,6 +20,8 @@ public class MainMenu {
         
         System.out.println("1. Make a deposit");
         System.out.println("2. Exit the app");
+        
+        System.out.println("4. Create additional account");
 
     }
 
@@ -36,6 +38,9 @@ public class MainMenu {
         switch (selection) {
             case 1:
                 performDeposit();
+                break;
+            case 4:
+                performAdditionalAccount();
         }
     }
 
@@ -47,6 +52,12 @@ public class MainMenu {
         }
         userAccount.deposit(depositAmount);
     }
+
+    public void performAdditionalAccount() {
+        userAccount.addAccount();
+        System.out.println("Added an additional account.");
+    }
+
 
     public void run() {
         int selection = -1;
