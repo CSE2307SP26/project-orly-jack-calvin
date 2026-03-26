@@ -32,6 +32,7 @@ public class BankAccount {
   
     public void withdraw(double amount) {
         balance -= amount;
+        this.transactionHistory.add("Withdrew: " + amount);
     }   
 
     public void close() {
