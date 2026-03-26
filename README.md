@@ -27,4 +27,5 @@ This past iteration we worked on user stories 2-7. We hope to refine those same 
 Everything seems to work okay!
 
 ## What commands are needed to compile and run your code from the command line?
-Just ./runApp.test and if there is a permissions error, you can run chmod +x runApp.sh in your terminal.
+Type in ./runApp.test to simulate the functionality, and if there is a permissions error, you can run chmod +x runApp.sh in your terminal.
+In order to run the test suites, type in ./runTests.sh, and if there is a permissions error, you can run chmod +x runTests.sh in your terminal.
