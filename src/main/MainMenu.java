@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-    private static final int EXIT_SELECTION = 4;
-	private static final int MAX_SELECTION = 4;
+  private static final int EXIT_SELECTION = 8;
+	private static final int MAX_SELECTION = 8;
 
 	private BankAccount userAccount;
     private Scanner keyboardInput;
@@ -21,7 +21,11 @@ public class MainMenu {
         System.out.println("1. Make a deposit");
         System.out.println("2. Check Balance");
         System.out.println("3. Withdraw money");
-        System.out.println("4. Exit the app");
+        System.out.println("4. View transaction history");
+        System.out.println("5. Close account");
+        System.out.println("6. Transfer money");
+        System.out.println("7. Add account");
+        System.out.println("8. Exit the app");
 
     }
 
@@ -46,6 +50,18 @@ public class MainMenu {
                 performWithdraw();
                 break;
             case 4:
+                performTransactionHistory();
+                break;
+            case 5:
+                closeAccount();
+                break;
+            case 6:
+                performTransfer();
+                break;
+            case 7:
+                performAdditionalAccount();
+                break;
+            case 8:
                 System.out.println("Goodbye!");
                 break;
         }
@@ -77,6 +93,38 @@ public class MainMenu {
 
     public void checkBalance(){
         System.out.println("Current balance " + userAccount.getBalance());
+    }
+
+    public void performTransactionHistory() {
+        System.out.println(userAccount.transactionHistory());
+    }
+
+    public void performAdditionalAccount() {
+        userAccount.addAccount();
+        System.out.println("Added an additional account.");
+    }
+
+
+    public void closeAccount() {
+        if (userAccount.getBalance() != 0) {
+            System.out.println("Cannot close account with a non-zero balance.");
+        } else {
+            userAccount.close();
+            System.out.println("You have closed your account. Goodbye!");
+        }
+    }
+
+    public void performTransfer() {
+        // transfer to new account for now 
+        BankAccount recipient = new BankAccount();
+
+        // prompt user for amount to transfer
+        double transferAmount = -1;
+        while(transferAmount < 0) {
+            System.out.print("How much would you like to transfer: ");
+            transferAmount = keyboardInput.nextInt();
+        }
+        userAccount.transfer(recipient, transferAmount);
     }
 
     public void run() {
