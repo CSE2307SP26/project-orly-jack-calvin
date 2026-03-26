@@ -65,4 +65,14 @@ public class BankAccountTest {
             // test passes
         }
     }
+
+    @Test 
+    public void testTransfer() {
+        BankAccount sender = new BankAccount();
+        BankAccount recipient = new BankAccount();
+        sender.deposit(100);
+        sender.transfer(recipient, 50);
+        assertEquals(50, sender.getBalance(), 0.01);
+        assertEquals(50, recipient.getBalance(), 0.01);
+    }
 }
