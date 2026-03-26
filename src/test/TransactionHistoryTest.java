@@ -45,10 +45,14 @@ public class TransactionHistoryTest {
   
   @Test
     public void testTransactionHistoryWithdrawal() {
+      testAccount.deposit(50);
       testAccount.withdraw(50);
       List<String> history = testAccount.transactionHistory();
-      assertEquals(1, history.size());
-      assertEquals("Withdrew: 50.0", history.get(0));
+      assertEquals(2, history.size());
+      assertEquals(Arrays.asList(
+          "Deposited: 50.0",
+          "Withdrew: 50.0"
+      ), testAccount.transactionHistory());
     }
   
 }
