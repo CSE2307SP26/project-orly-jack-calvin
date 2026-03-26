@@ -29,11 +29,17 @@ public class BankAccount {
              throw new IllegalArgumentException();
         }
     }
-  
-    public void withdraw(double amount) {
-        balance -= amount;
-        this.transactionHistory.add("Withdrew: " + amount);
-    }   
+public void withdraw(double amount) {
+    if (!isOpen) {
+        throw new IllegalStateException("Account is closed");
+    }
+    if (amount <= 0 || amount > balance) {
+        throw new IllegalArgumentException();
+    }
+    balance -= amount;
+    this.transactionHistory.add("Withdrew: " + amount);
+}
+
 
     public void close() {
         this.isOpen = false;
