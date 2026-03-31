@@ -4,14 +4,16 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-  private static final int EXIT_SELECTION = 8;
-	private static final int MAX_SELECTION = 8;
+  private static final int EXIT_SELECTION = 9;
+	private static final int MAX_SELECTION = 9;
 
+    private Bank bank;
 	private BankAccount userAccount;
     private Scanner keyboardInput;
 
     public MainMenu() {
-        this.userAccount = new BankAccount();
+        this.bank = new Bank();
+        this.userAccount = bank.getAccountList().get(0);
         this.keyboardInput = new Scanner(System.in);
     }
 
@@ -25,7 +27,8 @@ public class MainMenu {
         System.out.println("5. Close account");
         System.out.println("6. Transfer money");
         System.out.println("7. Add account");
-        System.out.println("8. Exit the app");
+        System.out.println("8. View accounts");
+        System.out.println("9. Exit the app");
 
     }
 
@@ -62,6 +65,9 @@ public class MainMenu {
                 performAdditionalAccount();
                 break;
             case 8:
+                viewAccounts();
+                break;
+            case 9:
                 System.out.println("Goodbye!");
                 break;
         }
@@ -74,6 +80,8 @@ public class MainMenu {
             depositAmount = keyboardInput.nextDouble();
         }
         userAccount.deposit(depositAmount);
+        bank.depositToBank(userAccount, depositAmount);
+        System.out.println("Deposit successful.");
     }
     public void performWithdraw() {
         double withdrawAmount = -1;
@@ -86,6 +94,7 @@ public class MainMenu {
         if (withdrawAmount > userAccount.getBalance()) {
             System.out.println("Insufficient funds.");
         } else {
+            bank.withdrawFromBank(userAccount, withdrawAmount);
             userAccount.withdraw(withdrawAmount);
             System.out.println("Withdrawal successful.");
         }
@@ -100,8 +109,16 @@ public class MainMenu {
     }
 
     public void performAdditionalAccount() {
-        userAccount.addAccount();
-        System.out.println("Added an additional account.");
+        // userAccount.addAccount();
+        bank.addAccount();
+        System.out.println("Added an additional account.\n");
+
+    }
+
+    public void viewAccounts() {
+        for (BankAccount account : bank.getAccountList()) {
+            System.out.println(account.getName() + " - Balance: " + account.getBalance());
+        }
     }
 
 
@@ -109,22 +126,38 @@ public class MainMenu {
         if (userAccount.getBalance() != 0) {
             System.out.println("Cannot close account with a non-zero balance.");
         } else {
+            bank.getAccountList().remove(userAccount);
             userAccount.close();
             System.out.println("You have closed your account. Goodbye!");
         }
     }
 
     public void performTransfer() {
-        // transfer to new account for now 
-        BankAccount recipient = new BankAccount();
-
+        if (bank.getAccountList().size() < 2) {
+            System.out.println("You need at least two accounts to perform a transfer.");
+            return;
+        }
+        // prompt user for recipient account
+        BankAccount recipient = null;
+        while(recipient == null) {
+            System.out.println("Enter the number of the account you would like to transfer to: ");
+            for (int i = 0; i < bank.getAccountList().size(); i++) {
+                System.out.println(i+1 + ". " + bank.getAccountList().get(i).getName());
+            }
+            int recipientIndex = keyboardInput.nextInt() - 1;
+            if (recipientIndex >= 0 && recipientIndex < bank.getAccountList().size()) {
+                recipient = bank.getAccountList().get(recipientIndex);
+            }
+        }
         // prompt user for amount to transfer
         double transferAmount = -1;
         while(transferAmount < 0) {
             System.out.print("How much would you like to transfer: ");
             transferAmount = keyboardInput.nextInt();
         }
-        userAccount.transfer(recipient, transferAmount);
+
+        // transfer happens in Bank class - update both account balances
+        bank.transfer(userAccount, recipient, transferAmount);
     }
 
     public void run() {
