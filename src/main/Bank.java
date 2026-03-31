@@ -43,4 +43,16 @@ public class Bank {
             recipient.deposit(amount);
         } else {
             throw new IllegalArgumentException();
-   
+        }
+    }
+
+    public void withdrawFromBank(BankAccount account, double amount) {
+        if (amount > 0 && amount <= bankBalance) {
+            this.bankBalance -= amount;
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    
+}
