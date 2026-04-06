@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-  private static final int EXIT_SELECTION = 9;
-	private static final int MAX_SELECTION = 9;
+  private static final int EXIT_SELECTION = 10;
+	private static final int MAX_SELECTION = 10;
 
     private Bank bank;
 	private BankAccount userAccount;
@@ -28,7 +28,8 @@ public class MainMenu {
         System.out.println("6. Transfer money");
         System.out.println("7. Add account");
         System.out.println("8. View accounts");
-        System.out.println("9. Exit the app");
+        System.out.println("9. Set account minimum");
+        System.out.println("10. Exit the app");
 
     }
 
@@ -68,6 +69,9 @@ public class MainMenu {
                 viewAccounts();
                 break;
             case 9:
+                performSetMinimum();
+                break;
+            case 10:
                 System.out.println("Goodbye!");
                 break;
         }
@@ -158,6 +162,16 @@ public class MainMenu {
 
         // transfer happens in Bank class - update both account balances
         bank.transfer(userAccount, recipient, transferAmount);
+    }
+
+    public void performSetMinimum() {
+        double minimumAmount = -1;
+        while(minimumAmount < 0) {
+            System.out.print("What would you like to set your account minimum to: ");
+            minimumAmount = keyboardInput.nextDouble();
+        }
+        userAccount.setMinimum(minimumAmount);
+        System.out.println("Account minimum set to " + minimumAmount + ".");
     }
 
     public void run() {
