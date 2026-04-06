@@ -29,17 +29,41 @@ public class BankAccount {
              throw new IllegalArgumentException();
         }
     }
-public void withdraw(double amount) {
-    if (!isOpen) {
-        throw new IllegalStateException("Account is closed");
-    }
-    if (amount <= 0 || amount > balance) {
-        throw new IllegalArgumentException();
-    }
-    balance -= amount;
-    this.transactionHistory.add("Withdrew: " + amount);
-}
 
+    public void depositWithNote(double amount, String note) {
+        if (!isOpen) {
+            throw new IllegalStateException("Account is closed");
+        }
+        if(amount > 0) {
+            this.balance += amount;
+            this.transactionHistory.add("Deposited: " + amount + " [" + note + "]");
+        } else {
+             throw new IllegalArgumentException();
+        }
+    }
+
+
+    public void withdraw(double amount) {
+        if (!isOpen) {
+            throw new IllegalStateException("Account is closed");
+        }
+        if (amount <= 0 || amount > balance) {
+            throw new IllegalArgumentException();
+        }
+        balance -= amount;
+        this.transactionHistory.add("Withdrew: " + amount);
+    }
+
+    public void withdrawWithNote(double amount, String note) {
+        if (!isOpen) {
+            throw new IllegalStateException("Account is closed");
+        }
+        if (amount <= 0 || amount > balance) {
+            throw new IllegalArgumentException();
+        }
+        balance -= amount;
+        this.transactionHistory.add("Withdrew: " + amount + " [" + note + "]");
+    }
 
     public void close() {
         this.isOpen = false;
