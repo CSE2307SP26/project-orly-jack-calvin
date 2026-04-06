@@ -69,5 +69,17 @@ public void withdraw(double amount) {
     public List<String> transactionHistory() {
         return this.transactionHistory;
     }
+    
+    public void adminWithdraw(double amount) {
+        if (!isOpen) {
+            throw new IllegalStateException("Account is closed");
+        }
+        if (amount <= 0 || amount > balance) {
+            throw new IllegalArgumentException();
+        }
+        balance -= amount;
+        this.transactionHistory.add("Admin withdrew: " + amount);
 
+    }
 }
+

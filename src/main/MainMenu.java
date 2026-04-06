@@ -4,15 +4,18 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-  private static final int EXIT_SELECTION = 8;
-	private static final int MAX_SELECTION = 8;
+  private static final int EXIT_SELECTION = 9;
+	private static final int MAX_SELECTION = 9;
 
 	private BankAccount userAccount;
     private Scanner keyboardInput;
+    private BankAdministrator admin;
 
     public MainMenu() {
         this.userAccount = new BankAccount();
         this.keyboardInput = new Scanner(System.in);
+        this.admin = new BankAdministrator();
+    
     }
 
     public void displayOptions() {
@@ -25,7 +28,8 @@ public class MainMenu {
         System.out.println("5. Close account");
         System.out.println("6. Transfer money");
         System.out.println("7. Add account");
-        System.out.println("8. Exit the app");
+        System.out.println("8. Collect fees (admin)");
+        System.out.println("9. Exit the app");
 
     }
 
@@ -61,7 +65,10 @@ public class MainMenu {
             case 7:
                 performAdditionalAccount();
                 break;
-            case 8:
+            case 8: 
+                applyAdminFee();
+                break;
+            case 9:
                 System.out.println("Goodbye!");
                 break;
         }
@@ -126,6 +133,22 @@ public class MainMenu {
         }
         userAccount.transfer(recipient, transferAmount);
     }
+
+    public void applyAdminFee() {
+    double fee = -1;
+
+    while (fee <= 0) {
+        System.out.print("Enter fee amount: ");
+        fee = keyboardInput.nextDouble();
+    }
+
+    if (fee > userAccount.getBalance()) {
+        System.out.println("Insufficient funds.");
+    } else {
+        admin.collectFees(userAccount, fee);
+        System.out.println("Fee applied.");
+    }
+}
 
     public void run() {
         int selection = -1;
