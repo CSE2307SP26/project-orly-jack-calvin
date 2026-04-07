@@ -32,4 +32,5 @@ void testCollectFees_negativeFee() {
         admin.collectFees(account, -10.0);
     });
 }
+
 }
