@@ -48,6 +48,24 @@ public class Bank {
         }
     }
 
+    public void depositFees(BankAccount account, double fee) {
+        if (fee > 0) {
+            this.bankBalance += fee;
+            addTransaction(account, fee, "Fee Collection");
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void payInterest(BankAccount account, double interest) {
+        if (interest > 0) {
+            this.bankBalance -= interest;
+            addTransaction(account, interest, "Interest Payment");
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
     public void transfer(BankAccount sender, BankAccount recipient, double amount) {
         if (amount > 0 && amount <= sender.getBalance()) {
             sender.withdraw(amount);
@@ -73,6 +91,10 @@ public class Bank {
 
      public List<String> transactionHistory() {
         return this.transactionHistory;
+    }
+
+    public double getBalance() {
+        return this.bankBalance;
     }
 
     

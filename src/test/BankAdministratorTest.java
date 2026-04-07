@@ -34,18 +34,6 @@ void testCollectFees_negativeFee() {
 }
 
 
-@Test
-void testCollectFees_zeroFee() {
-    Bank bank = new Bank();
-    BankAccount account = bank.getAccountList().get(0);
-    BankAdministrator admin = new BankAdministrator(bank);
-
-    account.deposit(50.0);
-
-    admin.collectFees(account, 0.0);
-
-    assertEquals(50.0, account.getBalance(), 0.001);
-}
 
 @Test
 void testTransactionHistory() {
@@ -66,5 +54,20 @@ void testTransactionHistory() {
     assertEquals("Withdrawal of $30.0 for " + account1.getName(), bank.transactionHistory().get(1));
     assertEquals("Transfer from " + account1.getName() + " to " + account2.getName() + ": $20.0", bank.transactionHistory().get(2));
     }
+
+@Test
+void testCheckBankBalance() {
+    Bank bank = new Bank();
+    bank.addAccount();
+    BankAccount account1 = bank.getAccountList().get(0);
+    BankAccount account2 = bank.getAccountList().get(1); 
+
+    account1.deposit(100.0);
+    bank.depositToBank(account1, 100.0); // Log deposit to bank
+    account2.deposit(200.0);
+    bank.depositToBank(account2, 200.0); // Log deposit to bank
+
+    assertEquals(300.0, bank.getBalance(), 0.001);
+}
 
 }

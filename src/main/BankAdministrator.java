@@ -11,6 +11,7 @@ public class BankAdministrator {
             throw new IllegalArgumentException("Fee must be positive");
         } else{
             account.adminWithdraw(fee);
+            bank.depositFees(account, fee);
     
         }
     }
@@ -22,8 +23,13 @@ public class BankAdministrator {
         double interest = account.getBalance() * interestDecimalRate;
 
         if (interest > 0) {
+            if (account.getBalance() + interest < 0) {
+                throw new IllegalArgumentException("Bank cannot pay interest at this time");
+            }
             account.deposit(interest);
+            bank.payInterest(account, interest);
         }
+
     }
 
     public void viewAllTransactions() {

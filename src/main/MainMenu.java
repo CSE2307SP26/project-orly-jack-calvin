@@ -63,7 +63,7 @@ public class MainMenu {
     public void processAdministratorInput(int selection) {
         switch (selection) {
             case 1:
-                // view bank balance
+                viewBankBalance();
                 break;
             case 2:
                 viewAccounts();
@@ -362,13 +362,17 @@ public class MainMenu {
         System.out.println("Interest applied.");
     }
 
+    public void viewBankBalance() {
+        double totalBalance = bank.getBalance();
+        System.out.println("Total Bank Balance: " + totalBalance);
+    }
+
     public void run() {
         int selection = -1;
         while(selection != EXIT_SELECTION) {
             if (mainMenu) {
                 mainMenuDisplayOptions();
                 selection = getUserSelection(MAIN_MENU_EXIT_SELECTION);
-                // processInput(selection);
                 processMenuInput(selection);
             }
             else if (userDisplay) {
