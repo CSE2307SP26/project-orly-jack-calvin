@@ -34,6 +34,7 @@ private static final int MAX_SELECTION = 10;
 
     public void mainMenuDisplayOptions() {
         this.mainMenu = false;
+        System.out.println();
         System.out.println("Welcome to the 237 Bank App!");
         System.out.println("1. View Account");
         System.out.println("2. Create New Account");
@@ -44,6 +45,7 @@ private static final int MAX_SELECTION = 10;
     public void administratorDisplayOptions() {
         this.adminDisplay = true;
         this.userDisplay = false;
+        System.out.println();
         System.out.println("Administrator Portal");
         System.out.println("1. View Bank Balance");
         System.out.println("2. View Accounts");
@@ -80,9 +82,6 @@ private static final int MAX_SELECTION = 10;
                 setUserAccount(bank.getAccountList().get(selection - 1));
                 displayOptions();
                 selection = getUserSelection(MAX_SELECTION);
-                // processInput(selection);
-                
-                System.out.println();
                 processInput(selection);
                 break;
             case 2:
@@ -114,8 +113,7 @@ private static final int MAX_SELECTION = 10;
         System.out.println("6. Transfer money");
         System.out.println("7. Add account");
         System.out.println("8. View accounts");
-        System.out.println("9. [Admin] Apply fee");
-        System.out.println("10. Exit the app");
+        System.out.println("9. Exit the app");
 
     }
 
