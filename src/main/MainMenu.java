@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-private static final int EXIT_SELECTION = 10;
-private static final int MAX_SELECTION = 10;
+private static final int EXIT_SELECTION = 11;
+private static final int MAX_SELECTION = 11;
 
     private Bank bank;
 	private BankAccount userAccount;
@@ -32,6 +32,7 @@ private static final int MAX_SELECTION = 10;
         System.out.println("7. Add account");
         System.out.println("8. View accounts");
         System.out.println("9. [Admin] Apply fee");
+        System.out.println("10. [Admin] Add interest payment");
         System.out.println("10. Exit the app");
 
     }
@@ -73,8 +74,11 @@ private static final int MAX_SELECTION = 10;
                 break;
             case 9:
                 applyAdminFee();
-                break;
             case 10:
+                applyInterest();
+                break;
+              
+            case 11:
                 System.out.println("Goodbye!");
                 break;
         }
@@ -181,6 +185,17 @@ private static final int MAX_SELECTION = 10;
         admin.collectFees(userAccount, fee);
         System.out.println("Fee applied.");
     }
+}
+    public void applyInterest() {
+    double rate = -1;
+
+    while (rate < 0 || rate > 100) {
+        System.out.print("Enter interest rate (%): ");
+        rate = keyboardInput.nextDouble();
+    }
+
+    admin.addInterestPayment(userAccount, rate);
+    System.out.println("Interest applied.");
 }
 
     public void run() {
