@@ -62,8 +62,6 @@ void testTransactionHistory() {
 
     assertEquals(3, bank.transactionHistory().size());
 
-    
-
     assertEquals("Deposit of $100.0 for " + account1.getName(), bank.transactionHistory().get(0));
     assertEquals("Withdrawal of $30.0 for " + account1.getName(), bank.transactionHistory().get(1));
     assertEquals("Transfer from " + account1.getName() + " to " + account2.getName() + ": $20.0", bank.transactionHistory().get(2));
