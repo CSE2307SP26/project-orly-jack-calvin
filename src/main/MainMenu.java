@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-  private static final int EXIT_SELECTION = 9;
-	private static final int MAX_SELECTION = 9;
+private static final int EXIT_SELECTION = 10;
+private static final int MAX_SELECTION = 10;
 
     private Bank bank;
 	private BankAccount userAccount;
@@ -31,7 +31,8 @@ public class MainMenu {
         System.out.println("6. Transfer money");
         System.out.println("7. Add account");
         System.out.println("8. View accounts");
-        System.out.println("9. Exit the app");
+        System.out.println("9. [Admin] Apply fee");
+        System.out.println("10. Exit the app");
 
     }
 
@@ -67,15 +68,13 @@ public class MainMenu {
             case 7:
                 performAdditionalAccount();
                 break;
-<<<<<<< HEAD
-            case 8: 
-                applyAdminFee();
-=======
             case 8:
                 viewAccounts();
->>>>>>> 7dee736043044c8824895d0aa21c5c8cf6857e02
                 break;
             case 9:
+                applyAdminFee();
+                break;
+            case 10:
                 System.out.println("Goodbye!");
                 break;
         }
@@ -161,7 +160,7 @@ public class MainMenu {
         double transferAmount = -1;
         while(transferAmount < 0) {
             System.out.print("How much would you like to transfer: ");
-            transferAmount = keyboardInput.nextInt();
+            transferAmount = keyboardInput.nextDouble();
         }
 
         // transfer happens in Bank class - update both account balances
