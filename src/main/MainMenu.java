@@ -193,7 +193,7 @@ public class MainMenu {
     }
 
     public void displayNoteOptions() {
-        System.out.println("Would you like to add a note to your deposit?");
+        System.out.println("Would you like to add a note to your deposit? (Select a number)");
         System.out.println("1. Yes");
         System.out.println("2. No");
     }
