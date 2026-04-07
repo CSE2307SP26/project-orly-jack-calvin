@@ -47,15 +47,31 @@ public class BankAccount {
     }
 
 
+    // public void withdraw(double amount) {
+    //     if (!isOpen) {
+    //         throw new IllegalStateException("Account is closed");
+    //     }
+    //     if (amount <= 0 || amount > balance) {
+    //         throw new IllegalArgumentException();
+    //     }
+    //     balance -= amount;
+    //     this.transactionHistory.add("Withdrew: " + amount);
+    // }
+
     public void withdraw(double amount) {
         if (!isOpen) {
             throw new IllegalStateException("Account is closed");
         }
-        if (amount <= 0 || amount > balance) {
+        if (amount <= 0 || amount > balance) { // balance would go into negatives if you withdraw requested amount
             throw new IllegalArgumentException();
         }
-        balance -= amount;
-        this.transactionHistory.add("Withdrew: " + amount);
+        else if (minimum && this.balance - amount < this.minAmount) { // balance would go below minimum if you withdraw requested amount
+            System.out.println("The amount you requested goes below your account minimum. We cannot proceed with this transaction.");
+        }
+        else {
+            balance -= amount;
+            this.transactionHistory.add("Withdrew: " + amount);
+        }
     }
 
     public void withdrawWithNote(double amount, String note) {
