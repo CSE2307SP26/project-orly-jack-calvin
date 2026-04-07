@@ -9,12 +9,16 @@ public class BankAccount {
     private String name;
     private boolean isOpen;
     private List<String> transactionHistory;
+    private boolean minimum;
+    private double minAmount;
 
     public BankAccount() {
         this.name = "Account1";
         this.balance = 0;
         this.transactionHistory = new ArrayList<>();
         this.isOpen = true; 
+        this.minimum = false; // default for minimum is false, that there is no minimum
+        this.minAmount = 0;
     }
         
 
@@ -92,5 +96,22 @@ public class BankAccount {
     public List<String> transactionHistory() {
         return this.transactionHistory;
     }
+    
+    public void adminWithdraw(double amount) {
+        if (!isOpen) {
+            throw new IllegalStateException("Account is closed");
+        }
+        if (amount <= 0 || amount > balance) {
+            throw new IllegalArgumentException();
+        }
+        balance -= amount;
+        this.transactionHistory.add("Admin withdrew: " + amount);
+    }
+
+    public void setMinimum(double minimumAmount) {
+        this.minimum = true;
+        this.minAmount = minimumAmount;
+    }
 
 }
+
