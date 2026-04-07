@@ -4,12 +4,13 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-    private static final int EXIT_SELECTION = 9;
-	private static final int MAX_SELECTION = 9;
+private static final int EXIT_SELECTION = 10;
+private static final int MAX_SELECTION = 10;
 
     private Bank bank;
 	private BankAccount userAccount;
     private Scanner keyboardInput;
+    private BankAdministrator admin;
 
     private boolean mainMenu;
     private boolean adminDisplay;
@@ -19,6 +20,8 @@ public class MainMenu {
         this.bank = new Bank();
         this.userAccount = bank.getAccountList().get(0);
         this.keyboardInput = new Scanner(System.in);
+        this.admin = new BankAdministrator();
+    
         this.mainMenu = true;
         this.adminDisplay = false;
         this.userDisplay = false;
@@ -45,6 +48,7 @@ public class MainMenu {
         System.out.println("1. View Bank Balance");
         System.out.println("2. View Accounts");
         System.out.println("3. View Transaction History");
+        System.out.println("4. Collect fees");
     }
 
     public void processAdministratorInput(int selection) {
@@ -58,6 +62,9 @@ public class MainMenu {
                 break;
             case 3:
                 // view transaction history
+                break;
+            case 4:
+                applyAdminFee();
                 break;
         }
     }
@@ -107,7 +114,8 @@ public class MainMenu {
         System.out.println("6. Transfer money");
         System.out.println("7. Add account");
         System.out.println("8. View accounts");
-        System.out.println("9. Exit the app");
+        System.out.println("9. [Admin] Apply fee");
+        System.out.println("10. Exit the app");
 
     }
 
@@ -245,6 +253,22 @@ public class MainMenu {
 
         // transfer happens in Bank class - update both account balances
         bank.transfer(userAccount, recipient, transferAmount);
+    }
+
+    public void applyAdminFee() {
+        double fee = -1;
+
+        while (fee <= 0) {
+            System.out.print("Enter fee amount: ");
+            fee = keyboardInput.nextDouble();
+        }
+
+        if (fee > userAccount.getBalance()) {
+            System.out.println("Insufficient funds.");
+        } else {
+            admin.collectFees(userAccount, fee);
+            System.out.println("Fee applied.");
+        }
     }
 
     public void run() {
