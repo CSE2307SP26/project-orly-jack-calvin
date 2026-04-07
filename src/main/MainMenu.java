@@ -30,7 +30,8 @@ public class MainMenu {
         System.out.println("5. Close account");
         System.out.println("6. Transfer money");
         System.out.println("7. Add account");
-        System.out.println("8. Exit the app");
+        System.out.println("8. View accounts");
+        System.out.println("9. Exit the app");
 
     }
 
@@ -66,7 +67,15 @@ public class MainMenu {
             case 7:
                 performAdditionalAccount();
                 break;
+<<<<<<< HEAD
+            case 8: 
+                applyAdminFee();
+=======
             case 8:
+                viewAccounts();
+>>>>>>> 7dee736043044c8824895d0aa21c5c8cf6857e02
+                break;
+            case 9:
                 System.out.println("Goodbye!");
                 break;
         }
@@ -154,8 +163,26 @@ public class MainMenu {
             System.out.print("How much would you like to transfer: ");
             transferAmount = keyboardInput.nextInt();
         }
-        userAccount.transfer(recipient, transferAmount);
+
+        // transfer happens in Bank class - update both account balances
+        bank.transfer(userAccount, recipient, transferAmount);
     }
+
+    public void applyAdminFee() {
+    double fee = -1;
+
+    while (fee <= 0) {
+        System.out.print("Enter fee amount: ");
+        fee = keyboardInput.nextDouble();
+    }
+
+    if (fee > userAccount.getBalance()) {
+        System.out.println("Insufficient funds.");
+    } else {
+        admin.collectFees(userAccount, fee);
+        System.out.println("Fee applied.");
+    }
+}
 
     public void run() {
         int selection = -1;
