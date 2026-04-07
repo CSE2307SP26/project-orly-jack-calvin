@@ -4,8 +4,10 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-private static final int EXIT_SELECTION = 11;
-private static final int MAX_SELECTION = 11;
+private static final int EXIT_SELECTION = 10;
+private static final int ADMIN_EXIT_SELECTION = 7;
+private static final int MAIN_MENU_EXIT_SELECTION = 4;
+private static final int MAX_SELECTION = 10;
 
     private Bank bank;
 	private BankAccount userAccount;
@@ -39,6 +41,7 @@ private static final int MAX_SELECTION = 11;
         System.out.println("1. View Account");
         System.out.println("2. Create New Account");
         System.out.println("3. Administrator Login");
+        System.out.println("4. Exit the app");
 
     }
 
@@ -52,6 +55,9 @@ private static final int MAX_SELECTION = 11;
         System.out.println("3. View Transaction History");
         System.out.println("4. Collect Fees");
         System.out.println("5. Add Interest Payment");
+        System.out.println("6. Return to Main Menu");
+        System.out.println("7. Exit the app");
+
     }
 
     public void processAdministratorInput(int selection) {
@@ -71,6 +77,15 @@ private static final int MAX_SELECTION = 11;
             case 5:
                 applyInterest();
                 break;
+            case 6:
+                mainMenu = true;
+                adminDisplay = false;
+                userDisplay = false;
+                break;
+            case 7:
+                System.out.println("Goodbye!");
+                System.exit(0);
+                break; 
         }
     }
 
@@ -81,7 +96,7 @@ private static final int MAX_SELECTION = 11;
                 this.userDisplay = true;
                 System.out.println("Which account would you like to view (select the number): ");
                 viewAccounts();
-                selection = getUserSelection(MAX_SELECTION); // selection of the account
+                selection = getUserSelection(bank.getNumberOfAccounts()); // selection of the account
                 setUserAccount(bank.getAccountList().get(selection - 1));
                 displayOptions();
                 selection = getUserSelection(MAX_SELECTION);
@@ -91,14 +106,18 @@ private static final int MAX_SELECTION = 11;
                 this.mainMenu = true;
                 this.adminDisplay = false;
                 this.userDisplay = false;
-                performAdditionalAccount();
+                newAccount();
                 break;
             case 3:
                 this.adminDisplay = true;
                 this.userDisplay = false;
                 administratorDisplayOptions();
-                selection = getUserSelection(MAX_SELECTION); // need to limit this selection to the number of options in the admin menu
+                selection = getUserSelection(ADMIN_EXIT_SELECTION); // need to limit this selection to the number of options in the admin menu
                 processAdministratorInput(selection);
+                break;
+            case 4:
+                System.out.println("Goodbye!");
+                System.exit(0);
                 break;
         }
     }
@@ -116,7 +135,9 @@ private static final int MAX_SELECTION = 11;
         System.out.println("6. Transfer money");
         System.out.println("7. Add account");
         System.out.println("8. View accounts");
-        System.out.println("9. Exit the app");
+        System.out.println("9. Return to main menu");
+        System.out.println("10. Exit the app");
+        
 
     }
 
@@ -150,12 +171,17 @@ private static final int MAX_SELECTION = 11;
                 performTransfer();
                 break;
             case 7:
-                performAdditionalAccount();
+                newAccount();
                 break;
             case 8:
                 viewAccounts();
                 break;
             case 9: 
+                this.mainMenu = true;
+                this.adminDisplay = false;
+                this.userDisplay = false;
+                break;
+            case 10:
                 System.out.println("Goodbye!"); 
                 System.exit(0);
                 break;
@@ -197,17 +223,13 @@ private static final int MAX_SELECTION = 11;
         System.out.println(userAccount.transactionHistory());
     }
 
-    public void performAdditionalAccount() {
-        // userAccount.addAccount();
+    public void newAccount() {
         bank.addAccount();
-        System.out.println("Added an additional account.\n");
+        System.out.println("Created a new account.\n");
 
     }
 
     public void viewAccounts() {
-        // for (BankAccount account : bank.getAccountList()) {
-        //     System.out.println(account.getName() + " - Balance: " + account.getBalance());
-        // }
         for (int i = 0; i < bank.getAccountList().size(); i++) {
                 System.out.println(i+1 + ". " + bank.getAccountList().get(i).getName() + " - Balance: " + bank.getAccountList().get(i).getBalance());
             }
@@ -252,7 +274,7 @@ private static final int MAX_SELECTION = 11;
             transferAmount = keyboardInput.nextDouble();
         }
 
-        // transfer happens in Bank class - update both account balances
+        // transfer happens in Bank class - updates both account balances
         bank.transfer(userAccount, recipient, transferAmount);
     }
 
@@ -290,7 +312,7 @@ private static final int MAX_SELECTION = 11;
             // displayOptions();
             while (mainMenu) {
                 mainMenuDisplayOptions();
-                selection = getUserSelection(MAX_SELECTION);
+                selection = getUserSelection(MAIN_MENU_EXIT_SELECTION);
                 // processInput(selection);
                 processMenuInput(selection);
             }
@@ -302,7 +324,7 @@ private static final int MAX_SELECTION = 11;
             }
             else if (adminDisplay) {
                 administratorDisplayOptions();
-                selection = getUserSelection(MAX_SELECTION);
+                selection = getUserSelection(ADMIN_EXIT_SELECTION);
                 processAdministratorInput(selection);
             }
             // }

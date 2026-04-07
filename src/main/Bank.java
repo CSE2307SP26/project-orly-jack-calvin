@@ -58,6 +58,10 @@ public class Bank {
         }
     }
 
+    public int getNumberOfAccounts() {
+        return accountNumberCounter;
+    }
+
     public void withdrawFromBank(BankAccount account, double amount) {
         if (amount > 0 && amount <= bankBalance) {
             this.bankBalance -= amount;
