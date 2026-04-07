@@ -1,5 +1,11 @@
 package main;
 public class BankAdministrator {
+
+    private Bank bank;
+
+    public BankAdministrator(Bank bank) {
+        this.bank = bank;
+    }
     public void collectFees(BankAccount account, double fee){
         if (fee <= 0) {
             throw new IllegalArgumentException("Fee must be positive");
@@ -18,6 +24,10 @@ public class BankAdministrator {
         if (interest > 0) {
             account.deposit(interest);
         }
+    }
 
-}
+    public void viewAllTransactions() {
+        System.out.println("Transaction History:");
+        bank.transactionHistory().forEach(System.out::println);
+    }
 }

@@ -10,7 +10,7 @@ public class MainMenu {
     private static final int MAX_SELECTION = 11;
 
     private Bank bank;
-	  private BankAccount userAccount;
+	private BankAccount userAccount;
     private Scanner keyboardInput;
     private BankAdministrator admin;
 
@@ -22,7 +22,7 @@ public class MainMenu {
         this.bank = new Bank();
         this.userAccount = bank.getAccountList().get(0);
         this.keyboardInput = new Scanner(System.in);
-        this.admin = new BankAdministrator();
+        this.admin = new BankAdministrator(bank);
     
         this.mainMenu = true;
         this.adminDisplay = false;
@@ -69,7 +69,7 @@ public class MainMenu {
                 viewAccounts();
                 break;
             case 3:
-                // view transaction history
+                bankTransactionHistory();
                 break;
             case 4:
                 applyAdminFee();
@@ -264,13 +264,19 @@ public class MainMenu {
     public void newAccount() {
         bank.addAccount();
         System.out.println("Created a new account.\n");
-
     }
 
     public void viewAccounts() {
         for (int i = 0; i < bank.getAccountList().size(); i++) {
                 System.out.println(i+1 + ". " + bank.getAccountList().get(i).getName() + " - Balance: " + bank.getAccountList().get(i).getBalance());
             }
+            
+        System.out.println();
+    }
+
+    public void bankTransactionHistory() {
+        admin.viewAllTransactions();
+        System.out.println();
     }
 
 
