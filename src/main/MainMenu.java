@@ -74,6 +74,7 @@ private static final int MAX_SELECTION = 11;
                 break;
             case 9:
                 applyAdminFee();
+				break;
             case 10:
                 applyInterest();
                 break;
