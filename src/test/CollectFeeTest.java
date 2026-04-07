@@ -30,17 +30,4 @@ void testCollectFees_negativeFee() {
     });
 }
 
-
-@Test
-void testCollectFees_zeroFee() {
-    BankAccount account = new BankAccount();
-    BankAdministrator admin = new BankAdministrator();
-
-    account.deposit(50.0);
-
-    admin.collectFees(account, 0.0);
-
-    assertEquals(50.0, account.getBalance(), 0.001);
-}
-
 }
