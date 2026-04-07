@@ -365,15 +365,13 @@ public class MainMenu {
     public void run() {
         int selection = -1;
         while(selection != EXIT_SELECTION) {
-            // displayOptions();
-            while (mainMenu) {
+            if (mainMenu) {
                 mainMenuDisplayOptions();
                 selection = getUserSelection(MAIN_MENU_EXIT_SELECTION);
                 // processInput(selection);
                 processMenuInput(selection);
             }
-            // else {
-            if (userDisplay) {
+            else if (userDisplay) {
                 displayOptions();
                 selection = getUserSelection(MAX_SELECTION);
                 processInput(selection);
@@ -383,7 +381,6 @@ public class MainMenu {
                 selection = getUserSelection(ADMIN_EXIT_SELECTION);
                 processAdministratorInput(selection);
             }
-            // }
             
         }
     }
