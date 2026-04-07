@@ -5,7 +5,7 @@ import main.BankAdministrator;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BankAdministratorTest {
+public class CollectFeeTest {
 
     @Test
     void testCollectFees_validFee() {
