@@ -67,7 +67,7 @@ public class MainMenu {
             case 1: // View Account
                 this.adminDisplay = false;
                 this.userDisplay = true;
-                System.out.println("Which account: ");
+                System.out.println("Which account would you like to view (select the number): ");
                 viewAccounts();
                 selection = getUserSelection(MAX_SELECTION); // selection of the account
                 setUserAccount(bank.getAccountList().get(selection - 1));
@@ -88,9 +88,9 @@ public class MainMenu {
                 this.adminDisplay = true;
                 this.userDisplay = false;
                 administratorDisplayOptions();
-                selection = getUserSelection(MAX_SELECTION);
+                selection = getUserSelection(MAX_SELECTION); // need to limit this selection to the number of options in the admin menu
                 processAdministratorInput(selection);
-                
+                break;
         }
     }
 
@@ -98,9 +98,9 @@ public class MainMenu {
         // this.adminDisplay = false;
         // this.userDisplay = true;
         System.out.println();
-        System.out.println("User Portal");
+        System.out.println("Welcome, " + userAccount.getName() + ".");
         System.out.println("1. Make a deposit");
-        System.out.println("2. Check Balance");
+        System.out.println("2. Check balance");
         System.out.println("3. Withdraw money");
         System.out.println("4. View transaction history");
         System.out.println("5. Close account");
@@ -146,8 +146,9 @@ public class MainMenu {
             case 8:
                 viewAccounts();
                 break;
-            case 9:
-                System.out.println("Goodbye!");
+            case 9: 
+                System.out.println("Goodbye!"); 
+                System.exit(0);
                 break;
         }
     }
@@ -195,9 +196,12 @@ public class MainMenu {
     }
 
     public void viewAccounts() {
-        for (BankAccount account : bank.getAccountList()) {
-            System.out.println(account.getName() + " - Balance: " + account.getBalance());
-        }
+        // for (BankAccount account : bank.getAccountList()) {
+        //     System.out.println(account.getName() + " - Balance: " + account.getBalance());
+        // }
+        for (int i = 0; i < bank.getAccountList().size(); i++) {
+                System.out.println(i+1 + ". " + bank.getAccountList().get(i).getName() + " - Balance: " + bank.getAccountList().get(i).getBalance());
+            }
     }
 
 
@@ -226,13 +230,17 @@ public class MainMenu {
             int recipientIndex = keyboardInput.nextInt() - 1;
             if (recipientIndex >= 0 && recipientIndex < bank.getAccountList().size()) {
                 recipient = bank.getAccountList().get(recipientIndex);
+                if (recipient == userAccount) {
+                    System.out.println("You cannot transfer to the same account. Please select a different account.");
+                    recipient = null;
+                }
             }
         }
         // prompt user for amount to transfer
         double transferAmount = -1;
         while(transferAmount < 0) {
             System.out.print("How much would you like to transfer: ");
-            transferAmount = keyboardInput.nextInt();
+            transferAmount = keyboardInput.nextDouble();
         }
 
         // transfer happens in Bank class - update both account balances
