@@ -12,12 +12,17 @@ public class MainMenu {
     private Scanner keyboardInput;
 
     private boolean mainMenu;
+    private boolean adminDisplay;
+    private boolean userDisplay;
 
     public MainMenu() {
         this.bank = new Bank();
         this.userAccount = bank.getAccountList().get(0);
         this.keyboardInput = new Scanner(System.in);
         this.mainMenu = true;
+        this.adminDisplay = false;
+        this.userDisplay = false;
+
     }
 
     public void setUserAccount(BankAccount account) {
@@ -34,6 +39,8 @@ public class MainMenu {
     }
 
     public void administratorDisplayOptions() {
+        this.adminDisplay = true;
+        this.userDisplay = false;
         System.out.println("Administrator Portal");
         System.out.println("1. View Bank Balance");
         System.out.println("2. View Accounts");
@@ -58,6 +65,8 @@ public class MainMenu {
     public void processMenuInput(int selection) {
         switch (selection) {
             case 1: // View Account
+                this.adminDisplay = false;
+                this.userDisplay = true;
                 System.out.println("Which account: ");
                 viewAccounts();
                 selection = getUserSelection(MAX_SELECTION); // selection of the account
@@ -71,9 +80,13 @@ public class MainMenu {
                 break;
             case 2:
                 this.mainMenu = true;
+                this.adminDisplay = false;
+                this.userDisplay = false;
                 performAdditionalAccount();
                 break;
             case 3:
+                this.adminDisplay = true;
+                this.userDisplay = false;
                 administratorDisplayOptions();
                 selection = getUserSelection(MAX_SELECTION);
                 processAdministratorInput(selection);
@@ -82,6 +95,8 @@ public class MainMenu {
     }
 
     public void displayOptions() {
+        // this.adminDisplay = false;
+        // this.userDisplay = true;
         System.out.println();
         System.out.println("User Portal");
         System.out.println("1. Make a deposit");
@@ -235,9 +250,16 @@ public class MainMenu {
                 processMenuInput(selection);
             }
             // else {
+            if (userDisplay) {
                 displayOptions();
                 selection = getUserSelection(MAX_SELECTION);
                 processInput(selection);
+            }
+            else if (adminDisplay) {
+                administratorDisplayOptions();
+                selection = getUserSelection(MAX_SELECTION);
+                processAdministratorInput(selection);
+            }
             // }
             
         }
