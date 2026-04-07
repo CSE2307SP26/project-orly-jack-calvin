@@ -4,22 +4,86 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-  private static final int EXIT_SELECTION = 9;
+    private static final int EXIT_SELECTION = 9;
 	private static final int MAX_SELECTION = 9;
 
     private Bank bank;
 	private BankAccount userAccount;
     private Scanner keyboardInput;
 
+    private boolean mainMenu;
+
     public MainMenu() {
         this.bank = new Bank();
         this.userAccount = bank.getAccountList().get(0);
         this.keyboardInput = new Scanner(System.in);
+        this.mainMenu = true;
+    }
+
+    public void setUserAccount(BankAccount account) {
+        this.userAccount = account;
+    }
+
+    public void mainMenuDisplayOptions() {
+        this.mainMenu = false;
+        System.out.println("Welcome to the 237 Bank App!");
+        System.out.println("1. View Account");
+        System.out.println("2. Create New Account");
+        System.out.println("3. Administrator Login");
+
+    }
+
+    public void administratorDisplayOptions() {
+        System.out.println("Administrator Portal");
+        System.out.println("1. View Bank Balance");
+        System.out.println("2. View Accounts");
+        System.out.println("3. View Transaction History");
+    }
+
+    public void processAdministratorInput(int selection) {
+        // calvin
+        switch (selection) {
+            case 1:
+                // view bank balance
+                break;
+            case 2:
+                viewAccounts();
+                break;
+            case 3:
+                // view transaction history
+                break;
+        }
+    }
+
+    public void processMenuInput(int selection) {
+        switch (selection) {
+            case 1: // View Account
+                System.out.println("Which account: ");
+                viewAccounts();
+                selection = getUserSelection(MAX_SELECTION); // selection of the account
+                setUserAccount(bank.getAccountList().get(selection - 1));
+                displayOptions();
+                selection = getUserSelection(MAX_SELECTION);
+                // processInput(selection);
+                
+                System.out.println();
+                processInput(selection);
+                break;
+            case 2:
+                this.mainMenu = true;
+                performAdditionalAccount();
+                break;
+            case 3:
+                administratorDisplayOptions();
+                selection = getUserSelection(MAX_SELECTION);
+                processAdministratorInput(selection);
+                
+        }
     }
 
     public void displayOptions() {
-        System.out.println("Welcome to the 237 Bank App!");
-        
+        System.out.println();
+        System.out.println("User Portal");
         System.out.println("1. Make a deposit");
         System.out.println("2. Check Balance");
         System.out.println("3. Withdraw money");
@@ -163,9 +227,19 @@ public class MainMenu {
     public void run() {
         int selection = -1;
         while(selection != EXIT_SELECTION) {
-            displayOptions();
-            selection = getUserSelection(MAX_SELECTION);
-            processInput(selection);
+            // displayOptions();
+            while (mainMenu) {
+                mainMenuDisplayOptions();
+                selection = getUserSelection(MAX_SELECTION);
+                // processInput(selection);
+                processMenuInput(selection);
+            }
+            // else {
+                displayOptions();
+                selection = getUserSelection(MAX_SELECTION);
+                processInput(selection);
+            // }
+            
         }
     }
 
