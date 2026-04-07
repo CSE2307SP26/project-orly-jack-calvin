@@ -71,5 +71,9 @@ public class Bank {
         }
     }
 
+     public List<String> transactionHistory() {
+        return this.transactionHistory;
+    }
+
     
 }
