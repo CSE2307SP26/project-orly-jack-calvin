@@ -33,7 +33,7 @@ private static final int MAX_SELECTION = 11;
         System.out.println("8. View accounts");
         System.out.println("9. [Admin] Apply fee");
         System.out.println("10. [Admin] Add interest payment");
-        System.out.println("10. Exit the app");
+        System.out.println("11. Exit the app");
 
     }
 
