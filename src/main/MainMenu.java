@@ -4,13 +4,13 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-private static final int EXIT_SELECTION = 10;
-private static final int ADMIN_EXIT_SELECTION = 7;
-private static final int MAIN_MENU_EXIT_SELECTION = 4;
-private static final int MAX_SELECTION = 10;
+    private static final int EXIT_SELECTION = 11;
+    private static final int ADMIN_EXIT_SELECTION = 7;
+    private static final int MAIN_MENU_EXIT_SELECTION = 4;
+    private static final int MAX_SELECTION = 11;
 
     private Bank bank;
-	private BankAccount userAccount;
+	  private BankAccount userAccount;
     private Scanner keyboardInput;
     private BankAdministrator admin;
 
@@ -135,8 +135,9 @@ private static final int MAX_SELECTION = 10;
         System.out.println("6. Transfer money");
         System.out.println("7. Add account");
         System.out.println("8. View accounts");
-        System.out.println("9. Return to main menu");
-        System.out.println("10. Exit the app");
+        System.out.println("9. Set account minimum");
+        System.out.println("10. Return to main menu");
+        System.out.println("11. Exit the app");
         
 
     }
@@ -176,12 +177,15 @@ private static final int MAX_SELECTION = 10;
             case 8:
                 viewAccounts();
                 break;
-            case 9: 
+            case 9:
+                performSetMinimum();
+                break;
+            case 10: 
                 this.mainMenu = true;
                 this.adminDisplay = false;
                 this.userDisplay = false;
                 break;
-            case 10:
+            case 11:
                 System.out.println("Goodbye!"); 
                 System.exit(0);
                 break;
@@ -278,6 +282,16 @@ private static final int MAX_SELECTION = 10;
         bank.transfer(userAccount, recipient, transferAmount);
     }
 
+    public void performSetMinimum() {
+        double minimumAmount = -1;
+        while(minimumAmount < 0) {
+            System.out.print("What would you like to set your account minimum to: ");
+            minimumAmount = keyboardInput.nextDouble();
+        }
+        userAccount.setMinimum(minimumAmount);
+        System.out.println("Account minimum set to " + minimumAmount + ".");
+    } 
+  
     public void applyAdminFee() {
         double fee = -1;
 
