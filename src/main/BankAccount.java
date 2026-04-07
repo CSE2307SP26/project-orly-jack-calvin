@@ -33,22 +33,41 @@ public class BankAccount {
              throw new IllegalArgumentException();
         }
     }
+
+    public void depositWithNote(double amount, String note) {
+        if (!isOpen) {
+            throw new IllegalStateException("Account is closed");
+        }
+        if(amount > 0) {
+            this.balance += amount;
+            this.transactionHistory.add("Deposited: " + amount + " [" + note + "]");
+        } else {
+             throw new IllegalArgumentException();
+        }
+    }
+
+
     public void withdraw(double amount) {
         if (!isOpen) {
             throw new IllegalStateException("Account is closed");
         }
-        if (amount <= 0 || amount > balance) { // balance would go into negatives if you withdraw requested amount
+        if (amount <= 0 || amount > balance) {
             throw new IllegalArgumentException();
         }
-        else if (minimum && this.balance - amount < this.minAmount) { // balance would go below minimum if you withdraw requested amount
-            System.out.println("The amount you requested goes below your account minimum. We cannot proceed with this transaction.");
-        }
-        else {
-            balance -= amount;
-            this.transactionHistory.add("Withdrew: " + amount);
-        }
+        balance -= amount;
+        this.transactionHistory.add("Withdrew: " + amount);
     }
 
+    public void withdrawWithNote(double amount, String note) {
+        if (!isOpen) {
+            throw new IllegalStateException("Account is closed");
+        }
+        if (amount <= 0 || amount > balance) {
+            throw new IllegalArgumentException();
+        }
+        balance -= amount;
+        this.transactionHistory.add("Withdrew: " + amount + " [" + note + "]");
+    }
 
     public void close() {
         this.isOpen = false;

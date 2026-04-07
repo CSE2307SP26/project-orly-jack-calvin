@@ -192,15 +192,35 @@ public class MainMenu {
         }
     }
 
+    public void displayNoteOptions() {
+        System.out.println("Would you like to add a note to your deposit?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
+    }
+
     public void performDeposit() {
         double depositAmount = -1;
         while(depositAmount < 0) {
             System.out.print("How much would you like to deposit: ");
             depositAmount = keyboardInput.nextDouble();
         }
-        userAccount.deposit(depositAmount);
+
+        displayNoteOptions();
+        int noteSelection = getUserSelection(2); // 1 for yes note, 2 for no note
+
+        if (noteSelection == 1) {
+            System.out.print("Add your note: ");
+            String note = keyboardInput.next();
+            userAccount.depositWithNote(depositAmount, note);
+        }
+
+        else {
+            userAccount.deposit(depositAmount);
+        }
+        
         bank.depositToBank(userAccount, depositAmount);
         System.out.println("Deposit successful.");
+        System.out.println();
     }
     public void performWithdraw() {
         double withdrawAmount = -1;
@@ -208,23 +228,37 @@ public class MainMenu {
         while (withdrawAmount <= 0) {
             System.out.print("How much would you like to withdraw: ");
             withdrawAmount = keyboardInput.nextDouble();
-    }
+        }
 
         if (withdrawAmount > userAccount.getBalance()) {
             System.out.println("Insufficient funds.");
         } else {
+            
+            displayNoteOptions();
+            int noteSelection = getUserSelection(2); // 1 for yes note, 2 for no note
+
+            if (noteSelection == 1) {
+                System.out.print("Add your note: ");
+                String note = keyboardInput.next();
+                userAccount.withdrawWithNote(withdrawAmount, note);
+            }
+            else {
+                userAccount.withdraw(withdrawAmount);
+            }
             bank.withdrawFromBank(userAccount, withdrawAmount);
-            userAccount.withdraw(withdrawAmount);
             System.out.println("Withdrawal successful.");
         }
+        System.out.println();
     }
 
     public void checkBalance(){
         System.out.println("Current balance " + userAccount.getBalance());
+        System.out.println();
     }
 
     public void performTransactionHistory() {
         System.out.println(userAccount.transactionHistory());
+        System.out.println();
     }
 
     public void newAccount() {
@@ -248,6 +282,7 @@ public class MainMenu {
             userAccount.close();
             System.out.println("You have closed your account. Goodbye!");
         }
+        System.out.println();
     }
 
     public void performTransfer() {
@@ -280,6 +315,7 @@ public class MainMenu {
 
         // transfer happens in Bank class - updates both account balances
         bank.transfer(userAccount, recipient, transferAmount);
+        System.out.println();
     }
 
     public void performSetMinimum() {
