@@ -1,6 +1,7 @@
 package test;
 
 import main.BankAccount;
+import main.Bank;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -10,25 +11,27 @@ import org.junit.jupiter.api.Test;
 
 public class AdditionalAccountTest {
 
-   private BankAccount testAccount;
-
-   public AdditionalAccountTest() {
-   }
+   private Bank testBank;
 
    @BeforeEach
    public void setup() {
-      this.testAccount = new BankAccount();
-      testAccount.addAccount();
+      this.testBank = new Bank();
    }
 
    @Test
-   public void testAdditionalAccount() {
-      assertEquals(testAccount.getAdditionalAccounts().size(), 1);
+   public void testAdditionalAccountOneAccount() {
+      assertEquals(testBank.getAccountList().size(), 1); // default account
+   }
+
+   @Test
+   public void testAdditionalAccountTwoAccounts() {
+      testBank.addAccount();
+      assertEquals(testBank.getAccountList().size(), 2);
    }
 
    @Test
    public void testAdditionalAccountDeposit() {
-      BankAccount additionalAccount = testAccount.getAdditionalAccounts().get(0);
+      BankAccount additionalAccount = testBank.getAccountList().get(0);
       additionalAccount.deposit(50);
       assertEquals(50, additionalAccount.getBalance(), 0.01);
    }

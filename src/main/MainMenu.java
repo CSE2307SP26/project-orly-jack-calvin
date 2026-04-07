@@ -12,19 +12,102 @@ private static final int MAX_SELECTION = 10;
     private Scanner keyboardInput;
     private BankAdministrator admin;
 
+    private boolean mainMenu;
+    private boolean adminDisplay;
+    private boolean userDisplay;
+
     public MainMenu() {
         this.bank = new Bank();
         this.userAccount = bank.getAccountList().get(0);
         this.keyboardInput = new Scanner(System.in);
         this.admin = new BankAdministrator();
     
+        this.mainMenu = true;
+        this.adminDisplay = false;
+        this.userDisplay = false;
+
+    }
+
+    public void setUserAccount(BankAccount account) {
+        this.userAccount = account;
+    }
+
+    public void mainMenuDisplayOptions() {
+        this.mainMenu = false;
+        System.out.println("Welcome to the 237 Bank App!");
+        System.out.println("1. View Account");
+        System.out.println("2. Create New Account");
+        System.out.println("3. Administrator Login");
+
+    }
+
+    public void administratorDisplayOptions() {
+        this.adminDisplay = true;
+        this.userDisplay = false;
+        System.out.println("Administrator Portal");
+        System.out.println("1. View Bank Balance");
+        System.out.println("2. View Accounts");
+        System.out.println("3. View Transaction History");
+        System.out.println("4. Collect fees");
+    }
+
+    public void processAdministratorInput(int selection) {
+        // calvin
+        switch (selection) {
+            case 1:
+                // view bank balance
+                break;
+            case 2:
+                viewAccounts();
+                break;
+            case 3:
+                // view transaction history
+                break;
+            case 4:
+                applyAdminFee();
+                break;
+        }
+    }
+
+    public void processMenuInput(int selection) {
+        switch (selection) {
+            case 1: // View Account
+                this.adminDisplay = false;
+                this.userDisplay = true;
+                System.out.println("Which account would you like to view (select the number): ");
+                viewAccounts();
+                selection = getUserSelection(MAX_SELECTION); // selection of the account
+                setUserAccount(bank.getAccountList().get(selection - 1));
+                displayOptions();
+                selection = getUserSelection(MAX_SELECTION);
+                // processInput(selection);
+                
+                System.out.println();
+                processInput(selection);
+                break;
+            case 2:
+                this.mainMenu = true;
+                this.adminDisplay = false;
+                this.userDisplay = false;
+                performAdditionalAccount();
+                break;
+            case 3:
+                this.adminDisplay = true;
+                this.userDisplay = false;
+                administratorDisplayOptions();
+                selection = getUserSelection(MAX_SELECTION); // need to limit this selection to the number of options in the admin menu
+                processAdministratorInput(selection);
+                break;
+        }
     }
 
     public void displayOptions() {
-        System.out.println("Welcome to the 237 Bank App!");
-        
+        // this.adminDisplay = false;
+        // this.userDisplay = true;
+        System.out.println();
+        System.out.println("Welcome, " + userAccount.getName() + ".");
         System.out.println("1. Make a deposit");
-        System.out.println("2. Check Balance");
+        System.out.println("2. Check balance");
         System.out.println("3. Withdraw money");
         System.out.println("4. View transaction history");
         System.out.println("5. Close account");
@@ -71,11 +154,9 @@ private static final int MAX_SELECTION = 10;
             case 8:
                 viewAccounts();
                 break;
-            case 9:
-                applyAdminFee();
-                break;
-            case 10:
-                System.out.println("Goodbye!");
+            case 9: 
+                System.out.println("Goodbye!"); 
+                System.exit(0);
                 break;
         }
     }
@@ -123,9 +204,12 @@ private static final int MAX_SELECTION = 10;
     }
 
     public void viewAccounts() {
-        for (BankAccount account : bank.getAccountList()) {
-            System.out.println(account.getName() + " - Balance: " + account.getBalance());
-        }
+        // for (BankAccount account : bank.getAccountList()) {
+        //     System.out.println(account.getName() + " - Balance: " + account.getBalance());
+        // }
+        for (int i = 0; i < bank.getAccountList().size(); i++) {
+                System.out.println(i+1 + ". " + bank.getAccountList().get(i).getName() + " - Balance: " + bank.getAccountList().get(i).getBalance());
+            }
     }
 
 
@@ -154,6 +238,10 @@ private static final int MAX_SELECTION = 10;
             int recipientIndex = keyboardInput.nextInt() - 1;
             if (recipientIndex >= 0 && recipientIndex < bank.getAccountList().size()) {
                 recipient = bank.getAccountList().get(recipientIndex);
+                if (recipient == userAccount) {
+                    System.out.println("You cannot transfer to the same account. Please select a different account.");
+                    recipient = null;
+                }
             }
         }
         // prompt user for amount to transfer
@@ -168,27 +256,44 @@ private static final int MAX_SELECTION = 10;
     }
 
     public void applyAdminFee() {
-    double fee = -1;
+        double fee = -1;
 
-    while (fee <= 0) {
-        System.out.print("Enter fee amount: ");
-        fee = keyboardInput.nextDouble();
-    }
+        while (fee <= 0) {
+            System.out.print("Enter fee amount: ");
+            fee = keyboardInput.nextDouble();
+        }
 
-    if (fee > userAccount.getBalance()) {
-        System.out.println("Insufficient funds.");
-    } else {
-        admin.collectFees(userAccount, fee);
-        System.out.println("Fee applied.");
+        if (fee > userAccount.getBalance()) {
+            System.out.println("Insufficient funds.");
+        } else {
+            admin.collectFees(userAccount, fee);
+            System.out.println("Fee applied.");
+        }
     }
-}
 
     public void run() {
         int selection = -1;
         while(selection != EXIT_SELECTION) {
-            displayOptions();
-            selection = getUserSelection(MAX_SELECTION);
-            processInput(selection);
+            // displayOptions();
+            while (mainMenu) {
+                mainMenuDisplayOptions();
+                selection = getUserSelection(MAX_SELECTION);
+                // processInput(selection);
+                processMenuInput(selection);
+            }
+            // else {
+            if (userDisplay) {
+                displayOptions();
+                selection = getUserSelection(MAX_SELECTION);
+                processInput(selection);
+            }
+            else if (adminDisplay) {
+                administratorDisplayOptions();
+                selection = getUserSelection(MAX_SELECTION);
+                processAdministratorInput(selection);
+            }
+            // }
+            
         }
     }
 
