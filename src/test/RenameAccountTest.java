@@ -10,19 +10,25 @@ import org.junit.jupiter.api.Test;
 
 public class RenameAccountTest {
   
+  private Bank testBank;
   private BankAccount testAccount;
+  String newName;
 
   @BeforeEach
   public void setup() {
+    this.testBank = new Bank();
     this.testAccount = new BankAccount();
+    this.newName = "new_name";
+    testAccount.renameAccount(newName);
   }
   
   @Test
   public void renameAccountTest() {
-
-    String newName = "new_name";
-    testAccount.renameAccount(newName);
     assertEquals(testAccount.getName(), newName);
+  }
 
+  public void bankRecordsChange() {
+    String nameInBank = testBank.getAccountList().get(0).getName();
+    assertEquals(nameInBank, newName);
   }
 }
