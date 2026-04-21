@@ -21,8 +21,8 @@ public class RenameAccountTest {
   public void renameAccountTest() {
 
     String newName = "new_name";
-    testAccount.renameAccount(testAccount, newName);
-    assertEqual(testAccount.getName(), newName);
+    testAccount.renameAccount(newName);
+    assertEquals(testAccount.getName(), newName);
 
   }
 }

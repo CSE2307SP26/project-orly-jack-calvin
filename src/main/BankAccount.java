@@ -129,6 +129,10 @@ public class BankAccount {
         this.minAmount = minimumAmount;
     }
 
+    public void renameAccount(String newName) {
+        this.name = newName;
+    }
+
 
 }
 
