@@ -17,7 +17,7 @@ public class RenameAccountTest {
   @BeforeEach
   public void setup() {
     this.testBank = new Bank();
-    this.testAccount = new BankAccount();
+    this.testAccount = this.testBank.getAccountList().get(0);
     this.newName = "new_name";
     testAccount.renameAccount(newName);
     testBank.changeAccountName(testAccount, newName);
