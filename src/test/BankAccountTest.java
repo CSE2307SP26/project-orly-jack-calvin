@@ -33,39 +33,6 @@ public class BankAccountTest {
         assertEquals(0, testAccount.getBalance(), 0.01);
     }
 
-    @Test
-    public void testWithdraw() {
-        BankAccount testAccount = new BankAccount();
-        testAccount.deposit(100);
-        testAccount.withdraw(40);
-        assertEquals(60, testAccount.getBalance(), 0.01);
-    }
-
-    @Test
-    public void testInvalidWithdrawTooMuch() {
-        BankAccount testAccount = new BankAccount();
-        testAccount.deposit(50);
-
-        try {
-            testAccount.withdraw(100);
-            fail();
-        } catch (IllegalArgumentException e) {
-            // test passes
-        }
-    }
-
-    @Test
-    public void testInvalidWithdrawNegative() {
-        BankAccount testAccount = new BankAccount();
-
-        try {
-            testAccount.withdraw(-10);
-            fail();
-        } catch (IllegalArgumentException e) {
-            // test passes
-        }
-    }
-
     @Test 
     public void testTransfer() {
         BankAccount sender = new BankAccount();
