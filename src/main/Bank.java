@@ -66,6 +66,14 @@ public class Bank {
             throw new IllegalArgumentException();
         }
     }
-
+    public void deleteAccount(BankAccount account) {
+    if (account == null) {
+        throw new IllegalArgumentException("Account cannot be null");
+    }
+    if (account.getBalance() != 0) {
+        throw new IllegalArgumentException("Cannot delete account with non-zero balance");
+    }
+    accountList.remove(account);
+}
     
 }

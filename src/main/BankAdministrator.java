@@ -18,6 +18,10 @@ public class BankAdministrator {
         if (interest > 0) {
             account.deposit(interest);
         }
-
+    }
+    public void deleteAccount(BankAccount account) {
+      account.close();
 }
+
+
 }

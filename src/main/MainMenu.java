@@ -52,6 +52,7 @@ private static final int MAX_SELECTION = 11;
         System.out.println("3. View Transaction History");
         System.out.println("4. Collect Fees");
         System.out.println("5. Add Interest Payment");
+        System.out.println("6. Delete Account");
     }
 
     public void processAdministratorInput(int selection) {
@@ -70,6 +71,9 @@ private static final int MAX_SELECTION = 11;
                 break;
             case 5:
                 applyInterest();
+                break;
+            case 6:
+                performDeleteAccount();
                 break;
         }
     }
@@ -255,6 +259,18 @@ private static final int MAX_SELECTION = 11;
         // transfer happens in Bank class - update both account balances
         bank.transfer(userAccount, recipient, transferAmount);
     }
+
+
+    public void performDeleteAccount() {
+    System.out.println("Select account to delete: ");
+    viewAccounts();
+    
+    int accountIndex = getUserSelection(bank.getAccountList().size()) - 1;
+    BankAccount targetAccount = bank.getAccountList().get(accountIndex);
+    
+    admin.deleteAccount(targetAccount);
+    bank.getAccountList().remove(targetAccount);
+}
 
     public void applyAdminFee() {
         double fee = -1;
