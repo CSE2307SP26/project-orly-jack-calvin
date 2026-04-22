@@ -375,6 +375,7 @@ public class MainMenu {
         System.out.print("Enter name you want to give your account: ");
         String newName = keyboardInput.next();
         userAccount.renameAccount(newName);
+        bank.changeAccountName(userAccount, newName);
     }
 
     public void run() {

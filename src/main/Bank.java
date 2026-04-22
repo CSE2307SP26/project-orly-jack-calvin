@@ -98,7 +98,7 @@ public class Bank {
     }
 
     public void changeAccountName(BankAccount account, String newName) {
-        this.defaultAccount.setName(newName);
+        account.setName(newName);
     }
 
     
