@@ -106,6 +106,10 @@ public class Bank {
     public boolean checkPassword(String userPassword) {
         return userPassword.equals(this.password);
     }
+  
+    public void changeAccountName(BankAccount account, String newName) {
+        account.setName(newName);
+    }
 
     
 }
