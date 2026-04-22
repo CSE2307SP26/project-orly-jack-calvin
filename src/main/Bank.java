@@ -97,5 +97,9 @@ public class Bank {
         return this.bankBalance;
     }
 
+    public void changeAccountName(BankAccount account, String newName) {
+        this.defaultAccount.setName(newName);
+    }
+
     
 }

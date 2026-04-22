@@ -1,5 +1,5 @@
 package main;
-
+import main.Bank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,6 +131,7 @@ public class BankAccount {
 
     public void renameAccount(String newName) {
         this.name = newName;
+        changeAccountName(this, newName);
     }
 
 

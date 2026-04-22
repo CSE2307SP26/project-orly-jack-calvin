@@ -27,6 +27,7 @@ public class RenameAccountTest {
     assertEquals(testAccount.getName(), newName);
   }
 
+  @Test
   public void bankRecordsChange() {
     String nameInBank = testBank.getAccountList().get(0).getName();
     assertEquals(nameInBank, newName);
