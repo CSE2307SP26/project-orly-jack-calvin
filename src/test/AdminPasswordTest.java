@@ -4,6 +4,7 @@ import main.Bank;
 import main.MainMenu;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,13 +22,17 @@ public class AdminPasswordTest {
    @Test
    public void correctPassword() {
     // when they put in correct password
-    String adminPassword = "shook";
-    assertEquals(adminPassword, testBank.getPassword());
+    String password = "1234";
+    testBank.checkPassword(password);
+    assertEquals(password, testBank.getPassword());
 
    }
 
    public void incorrectPassword() {
     // when they put in incorrect password, should reprompt them
+    String password = "shook";
+    testBank.checkPassword(password);
+    assertNotEquals(password, testBank.getPassword());
    }
   
 }
