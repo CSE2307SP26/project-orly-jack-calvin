@@ -10,7 +10,7 @@ public class MainMenu {
     private static final int MAX_SELECTION = 12;
 
     private Bank bank;
-	private BankAccount userAccount;
+    private BankAccount userAccount;
     private Scanner keyboardInput;
     private BankAdministrator admin;
 
@@ -29,7 +29,6 @@ public class MainMenu {
         this.adminDisplay = false;
         this.userDisplay = false;
         this.adminPasswordEntered = false;
-
     }
 
     public void setUserAccount(BankAccount account) {
@@ -44,24 +43,23 @@ public class MainMenu {
         System.out.println("2. Create New Account");
         System.out.println("3. Administrator Login");
         System.out.println("4. Exit the app");
-
     }
 
     public void administratorDisplayOptions() {
         this.adminDisplay = true;
         this.userDisplay = false;
-        System.out.println();
+        
         if (adminPasswordEntered || requestPassword()) {
+            System.out.println();
             System.out.println("Administrator Portal");
             System.out.println("1. View Bank Balance");
             System.out.println("2. View Accounts");
             System.out.println("3. View Transaction History");
             System.out.println("4. Collect Fees");
             System.out.println("5. Add Interest Payment");
-            System.out.println("6. Return to Main Menu");
-            System.out.println("7. Exit the app");
-        }
-        else {
+            System.out.println("6. Delete Account");
+            System.out.println("7. Freeze/Unfreeze Account");
+        } else {
             System.out.println("INCORRECT PASSWORD. Sending you back to main menu.");
             mainMenuDisplayOptions();
             int selection = getUserSelection(MAIN_MENU_EXIT_SELECTION);
@@ -87,25 +85,22 @@ public class MainMenu {
                 applyInterest();
                 break;
             case 6:
-                this.mainMenu = true;
-                this.adminDisplay = false;
-                this.userDisplay = false;
+                performDeleteAccount();
                 break;
             case 7:
-                System.out.println("Goodbye!");
-                System.exit(0);
-                break; 
+                performToggleFreezeAccount();
+                break;
         }
     }
 
     public void processMenuInput(int selection) {
         switch (selection) {
-            case 1: // View Account
+            case 1:
                 this.adminDisplay = false;
                 this.userDisplay = true;
                 System.out.println("Which account would you like to view (select the number): ");
                 viewAccounts();
-                selection = getUserSelection(bank.getNumberOfAccounts()); // selection of the account
+                selection = getUserSelection(bank.getNumberOfAccounts());
                 setUserAccount(bank.getAccountList().get(selection - 1));
                 displayOptions();
                 selection = getUserSelection(MAX_SELECTION);
@@ -121,7 +116,7 @@ public class MainMenu {
                 this.adminDisplay = true;
                 this.userDisplay = false;
                 administratorDisplayOptions();
-                selection = getUserSelection(ADMIN_EXIT_SELECTION); // need to limit this selection to the number of options in the admin menu
+                selection = getUserSelection(ADMIN_EXIT_SELECTION);
                 processAdministratorInput(selection);
                 break;
             case 4:
@@ -132,8 +127,6 @@ public class MainMenu {
     }
 
     public void displayOptions() {
-        // this.adminDisplay = false;
-        // this.userDisplay = true;
         System.out.println();
         System.out.println("Welcome, " + userAccount.getName() + ".");
         System.out.println("1. Make a deposit");
@@ -148,8 +141,6 @@ public class MainMenu {
         System.out.println("10. Rename account");
         System.out.println("11. Return to main menu");
         System.out.println("12. Exit the app");
-        
-
     }
 
     public int getUserSelection(int max) {
@@ -219,15 +210,13 @@ public class MainMenu {
         }
 
         displayNoteOptions();
-        int noteSelection = getUserSelection(2); // 1 for yes note, 2 for no note
+        int noteSelection = getUserSelection(2);
 
         if (noteSelection == 1) {
             System.out.print("Add your note: ");
             String note = keyboardInput.next();
             userAccount.depositWithNote(depositAmount, note);
-        }
-
-        else {
+        } else {
             userAccount.deposit(depositAmount);
         }
         
@@ -235,6 +224,7 @@ public class MainMenu {
         System.out.println("Deposit successful.");
         System.out.println();
     }
+
     public void performWithdraw() {
         double withdrawAmount = -1;
 
@@ -246,16 +236,14 @@ public class MainMenu {
         if (withdrawAmount > userAccount.getBalance()) {
             System.out.println("Insufficient funds.");
         } else {
-            
             displayNoteOptions();
-            int noteSelection = getUserSelection(2); // 1 for yes note, 2 for no note
+            int noteSelection = getUserSelection(2);
 
             if (noteSelection == 1) {
                 System.out.print("Add your note: ");
                 String note = keyboardInput.next();
                 userAccount.withdrawWithNote(withdrawAmount, note);
-            }
-            else {
+            } else {
                 userAccount.withdraw(withdrawAmount);
             }
             bank.withdrawFromBank(userAccount, withdrawAmount);
@@ -281,9 +269,8 @@ public class MainMenu {
 
     public void viewAccounts() {
         for (int i = 0; i < bank.getAccountList().size(); i++) {
-                System.out.println(i+1 + ". " + bank.getAccountList().get(i).getName() + " - Balance: " + bank.getAccountList().get(i).getBalance());
-            }
-            
+            System.out.println(i+1 + ". " + bank.getAccountList().get(i).getName() + " - Balance: " + bank.getAccountList().get(i).getBalance());
+        }
         System.out.println();
     }
 
@@ -291,7 +278,6 @@ public class MainMenu {
         admin.viewAllTransactions();
         System.out.println();
     }
-
 
     public void closeAccount() {
         if (userAccount.getBalance() != 0) {
@@ -309,7 +295,6 @@ public class MainMenu {
             System.out.println("You need at least two accounts to perform a transfer.");
             return;
         }
-        // prompt user for recipient account
         BankAccount recipient = null;
         while(recipient == null) {
             System.out.println("Enter the number of the account you would like to transfer to: ");
@@ -325,16 +310,25 @@ public class MainMenu {
                 }
             }
         }
-        // prompt user for amount to transfer
         double transferAmount = -1;
         while(transferAmount < 0) {
             System.out.print("How much would you like to transfer: ");
             transferAmount = keyboardInput.nextDouble();
         }
 
-        // transfer happens in Bank class - updates both account balances
         bank.transfer(userAccount, recipient, transferAmount);
         System.out.println();
+    }
+
+    public void performDeleteAccount() {
+        System.out.println("Select account to delete: ");
+        viewAccounts();
+        
+        int accountIndex = getUserSelection(bank.getAccountList().size()) - 1;
+        BankAccount targetAccount = bank.getAccountList().get(accountIndex);
+        
+        admin.deleteAccount(targetAccount);
+        bank.getAccountList().remove(targetAccount);
     }
 
     public void performSetMinimum() {
@@ -345,8 +339,8 @@ public class MainMenu {
         }
         userAccount.setMinimum(minimumAmount);
         System.out.println("Account minimum set to " + minimumAmount + ".");
-    } 
-  
+    }
+
     public void applyAdminFee() {
         double fee = -1;
 
@@ -361,6 +355,17 @@ public class MainMenu {
             admin.collectFees(userAccount, fee);
             System.out.println("Fee applied.");
         }
+    }
+
+    public void performToggleFreezeAccount() {
+        System.out.println("Select account to freeze/unfreeze: ");
+        viewAccounts();
+    
+        int accountIndex = getUserSelection(bank.getAccountList().size()) - 1;
+        BankAccount targetAccount = bank.getAccountList().get(accountIndex);
+    
+        admin.toggleFreeze(targetAccount);
+        System.out.println("Account status changed.");
     }
 
     public void applyInterest() {
@@ -389,7 +394,7 @@ public class MainMenu {
         }
         return correctPassword;
     }
-  
+
     public void performRenameAccount() {
         System.out.print("Enter name you want to give your account: ");
         String newName = keyboardInput.next();
@@ -415,7 +420,6 @@ public class MainMenu {
                 selection = getUserSelection(ADMIN_EXIT_SELECTION);
                 processAdministratorInput(selection);
             }
-            
         }
     }
 

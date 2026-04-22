@@ -25,6 +25,10 @@ This past iteration we worked on user stories 2-7. We hope to refine those same 
 
 8. A bank adminstrator should be able to collect fees from existing accounts when necessary.
 9. A bank adminstrator should be able to add an interest payment to an existing account when necessary.
+10. A Bank administrator can freeze/unfreeze an account.
+11. A Bank administrator can view all transactions
+12. A bank customer can set a “budget” (always need $50 in your account, so won’t let you withdraw if it means sinking you below your minimum)
+13. A bank customer can name and rename your accounts
 
 ## Is there anything that you implemented but doesn't currently work?
 Everything seems to work okay!

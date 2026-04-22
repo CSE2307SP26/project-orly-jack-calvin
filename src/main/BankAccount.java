@@ -11,6 +11,7 @@ public class BankAccount {
     private List<String> transactionHistory;
     private boolean minimum;
     private double minAmount;
+    private boolean isFrozen;
 
     public BankAccount() {
         this.name = "Account1";
@@ -19,12 +20,13 @@ public class BankAccount {
         this.isOpen = true; 
         this.minimum = false; // default for minimum is false, that there is no minimum
         this.minAmount = 0;
+        this.isFrozen = false;
     }
         
 
     public void deposit(double amount) {
-        if (!isOpen) {
-            throw new IllegalStateException("Account is closed");
+        if (!isOpen || isFrozen) {
+            throw new IllegalStateException("Account is closed or frozen");
         }
         if(amount > 0) {
             this.balance += amount;
@@ -35,8 +37,8 @@ public class BankAccount {
     }
 
     public void depositWithNote(double amount, String note) {
-        if (!isOpen) {
-            throw new IllegalStateException("Account is closed");
+        if (!isOpen || isFrozen) {
+            throw new IllegalStateException("Account is closed or frozen");
         }
         if(amount > 0) {
             this.balance += amount;
@@ -47,20 +49,9 @@ public class BankAccount {
     }
 
 
-    // public void withdraw(double amount) {
-    //     if (!isOpen) {
-    //         throw new IllegalStateException("Account is closed");
-    //     }
-    //     if (amount <= 0 || amount > balance) {
-    //         throw new IllegalArgumentException();
-    //     }
-    //     balance -= amount;
-    //     this.transactionHistory.add("Withdrew: " + amount);
-    // }
-
     public void withdraw(double amount) {
-        if (!isOpen) {
-            throw new IllegalStateException("Account is closed");
+        if (!isOpen || isFrozen) {
+            throw new IllegalStateException("Account is closed or frozen");
         }
         if (amount <= 0 || amount > balance) { // balance would go into negatives if you withdraw requested amount
             throw new IllegalArgumentException();
@@ -75,8 +66,8 @@ public class BankAccount {
     }
 
     public void withdrawWithNote(double amount, String note) {
-        if (!isOpen) {
-            throw new IllegalStateException("Account is closed");
+        if (!isOpen || isFrozen) {
+            throw new IllegalStateException("Account is closed or frozen");
         }
         if (amount <= 0 || amount > balance) {
             throw new IllegalArgumentException();
@@ -87,6 +78,14 @@ public class BankAccount {
 
     public void close() {
         this.isOpen = false;
+    }
+
+    public void setFrozen(boolean frozen) {
+        this.isFrozen = frozen;
+    }
+
+    public boolean isFrozen() {
+        return this.isFrozen;
     }
 
     public double getBalance() {
@@ -102,6 +101,9 @@ public class BankAccount {
     }
 
     public void transfer(BankAccount recipient, double amount) {
+        if (isFrozen) {
+            throw new IllegalStateException("Account is frozen");
+        }
         if(amount > 0 && this.balance >= amount && recipient != null && recipient != this) {
             this.balance -= amount;
             recipient.deposit(amount);
@@ -109,6 +111,7 @@ public class BankAccount {
             throw new IllegalArgumentException();
         }
     }
+
     public List<String> transactionHistory() {
         return this.transactionHistory;
     }
@@ -133,6 +136,4 @@ public class BankAccount {
         this.name = newName;
     }
 
-
 }
-
