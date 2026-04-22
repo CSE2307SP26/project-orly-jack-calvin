@@ -20,6 +20,7 @@ public class RenameAccountTest {
     this.testAccount = new BankAccount();
     this.newName = "new_name";
     testAccount.renameAccount(newName);
+    testBank.changeAccountName(testAccount, newName);
   }
   
   @Test
