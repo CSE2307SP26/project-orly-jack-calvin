@@ -53,6 +53,7 @@ private static final int MAX_SELECTION = 11;
         System.out.println("4. Collect Fees");
         System.out.println("5. Add Interest Payment");
         System.out.println("6. Delete Account");
+        System.out.println("7. Freeze/Unfreeze Account");
     }
 
     public void processAdministratorInput(int selection) {
@@ -74,6 +75,9 @@ private static final int MAX_SELECTION = 11;
                 break;
             case 6:
                 performDeleteAccount();
+                break;
+            case 7:
+                performToggleFreezeAccount();
                 break;
         }
     }
@@ -287,6 +291,17 @@ private static final int MAX_SELECTION = 11;
             System.out.println("Fee applied.");
         }
     }
+
+    public void performToggleFreezeAccount() {
+        System.out.println("Select account to freeze/unfreeze: ");
+        viewAccounts();
+    
+        int accountIndex = getUserSelection(bank.getAccountList().size()) - 1;
+        BankAccount targetAccount = bank.getAccountList().get(accountIndex);
+    
+        admin.toggleFreeze(targetAccount);
+        System.out.println("Account status changed.");
+}
 
     public void applyInterest() {
         double rate = -1;

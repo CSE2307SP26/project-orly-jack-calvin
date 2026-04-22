@@ -9,6 +9,7 @@ public class BankAccount {
     private String name;
     private boolean isOpen;
     private List<String> transactionHistory;
+    private boolean isFrozen = false;
 
     public BankAccount() {
         this.name = "Account1";
@@ -19,8 +20,8 @@ public class BankAccount {
         
 
     public void deposit(double amount) {
-        if (!isOpen) {
-            throw new IllegalStateException("Account is closed");
+        if (!isOpen || isFrozen) {
+            throw new IllegalStateException("Account is closedor frozen");
         }
         if(amount > 0) {
             this.balance += amount;
@@ -29,21 +30,29 @@ public class BankAccount {
              throw new IllegalArgumentException();
         }
     }
-public void withdraw(double amount) {
-    if (!isOpen) {
-        throw new IllegalStateException("Account is closed");
+    public void withdraw(double amount) {
+        if (!isOpen || isFrozen) {
+            throw new IllegalStateException("Account is closedor frozen");
     }
-    if (amount <= 0 || amount > balance) {
-        throw new IllegalArgumentException();
+        if (amount <= 0 || amount > balance) {
+            throw new IllegalArgumentException();
     }
     balance -= amount;
     this.transactionHistory.add("Withdrew: " + amount);
 }
 
+    
 
     public void close() {
         this.isOpen = false;
     }
+
+    public void setFrozen(boolean frozen) {
+        this.isFrozen = frozen;
+    }
+    public boolean isFrozen() {
+    return this.isFrozen;
+}
 
     public double getBalance() {
         return this.balance;
@@ -58,6 +67,9 @@ public void withdraw(double amount) {
     }
 
     public void transfer(BankAccount recipient, double amount) {
+        if (isFrozen) {
+            throw new IllegalStateException("Account is frozen");
+        }
         if(amount > 0 && this.balance >= amount && recipient != null && recipient != this) {
             this.balance -= amount;
             recipient.deposit(amount);

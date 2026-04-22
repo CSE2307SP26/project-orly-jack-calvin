@@ -23,5 +23,9 @@ public class BankAdministrator {
       account.close();
 }
 
+    public void toggleFreeze(BankAccount account) {
+    account.setFrozen(!account.isFrozen());
+}
+
 
 }
