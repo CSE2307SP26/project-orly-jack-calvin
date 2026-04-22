@@ -10,6 +10,7 @@ public class Bank {
     private double bankBalance;
     private List<BankAccount> accountList;
     private List<String> transactionHistory;
+    private String password;
 
     public Bank() {
         this.defaultAccount = new BankAccount();
@@ -18,6 +19,7 @@ public class Bank {
         this.accountList.add(defaultAccount);
         this.accountNumberCounter = 1;
         this.transactionHistory = new ArrayList<>();
+        this.password = "1234";
 
     }
     public List<BankAccount> getAccountList() {
@@ -97,6 +99,14 @@ public class Bank {
         return this.bankBalance;
     }
 
+    public String getPassword() {
+        return this.password;
+    }
+
+    public boolean checkPassword(String userPassword) {
+        return userPassword.equals(this.password);
+    }
+  
     public void changeAccountName(BankAccount account, String newName) {
         account.setName(newName);
     }

@@ -17,6 +17,7 @@ public class MainMenu {
     private boolean mainMenu;
     private boolean adminDisplay;
     private boolean userDisplay;
+    private boolean adminPasswordEntered;
 
     public MainMenu() {
         this.bank = new Bank();
@@ -27,6 +28,7 @@ public class MainMenu {
         this.mainMenu = true;
         this.adminDisplay = false;
         this.userDisplay = false;
+        this.adminPasswordEntered = false;
 
     }
 
@@ -49,15 +51,22 @@ public class MainMenu {
         this.adminDisplay = true;
         this.userDisplay = false;
         System.out.println();
-        System.out.println("Administrator Portal");
-        System.out.println("1. View Bank Balance");
-        System.out.println("2. View Accounts");
-        System.out.println("3. View Transaction History");
-        System.out.println("4. Collect Fees");
-        System.out.println("5. Add Interest Payment");
-        System.out.println("6. Return to Main Menu");
-        System.out.println("7. Exit the app");
-
+        if (adminPasswordEntered || requestPassword()) {
+            System.out.println("Administrator Portal");
+            System.out.println("1. View Bank Balance");
+            System.out.println("2. View Accounts");
+            System.out.println("3. View Transaction History");
+            System.out.println("4. Collect Fees");
+            System.out.println("5. Add Interest Payment");
+            System.out.println("6. Return to Main Menu");
+            System.out.println("7. Exit the app");
+        }
+        else {
+            System.out.println("INCORRECT PASSWORD. Sending you back to main menu.");
+            mainMenuDisplayOptions();
+            int selection = getUserSelection(MAIN_MENU_EXIT_SELECTION);
+            processMenuInput(selection);
+        }
     }
 
     public void processAdministratorInput(int selection) {
@@ -78,9 +87,9 @@ public class MainMenu {
                 applyInterest();
                 break;
             case 6:
-                mainMenu = true;
-                adminDisplay = false;
-                userDisplay = false;
+                this.mainMenu = true;
+                this.adminDisplay = false;
+                this.userDisplay = false;
                 break;
             case 7:
                 System.out.println("Goodbye!");
@@ -371,6 +380,16 @@ public class MainMenu {
         System.out.println("Total Bank Balance: " + totalBalance);
     }
 
+    public boolean requestPassword() {
+        System.out.print("Enter password for admin login (1234): ");
+        String password = keyboardInput.next();
+        boolean correctPassword = bank.checkPassword(password);
+        if (correctPassword) {
+            adminPasswordEntered = true;
+        }
+        return correctPassword;
+    }
+  
     public void performRenameAccount() {
         System.out.print("Enter name you want to give your account: ");
         String newName = keyboardInput.next();
