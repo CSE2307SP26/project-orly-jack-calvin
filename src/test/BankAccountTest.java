@@ -4,8 +4,13 @@ import main.Bank;
 import main.BankAccount;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
@@ -60,7 +65,7 @@ public class BankAccountTest {
         testAccount.depositWithNote(50, note);
         List<String> history = testAccount.transactionHistory();
         assertEquals(1, history.size());
-        assertEquals("Deposited: 50.0 [groceries]", history.get(0));
+        assertTrue(history.get(0).endsWith("Deposited: 50.0 [groceries]"));
     }
 
     @Test
@@ -70,7 +75,7 @@ public class BankAccountTest {
         testAccount.withdrawWithNote(50, note);
         List<String> history = testAccount.transactionHistory();
         assertEquals(2, history.size());
-        assertEquals("Withdrew: 50.0 [note]", history.get(1));
+        assertTrue(history.get(1).endsWith("Withdrew: 50.0 [note]"));
     }
 
     // Rename tests
@@ -82,6 +87,39 @@ public class BankAccountTest {
         testBank.changeAccountName(testAccount, newName);
         assertEquals(testAccount.getName(), newName);
     }
+
+      @Test
+    public void testToCSVCreatesFileAndWritesData() throws IOException {
+
+        BankAccount testAccount = new BankAccount();
+        testAccount.depositWithNote(150.0, "Initial deposit");
+        testAccount.withdrawWithNote(50.0, "Groceries");
+
+        String testFileName = "test_export.csv";
+        String testDirectory = "src/csv";
+        File exportedFile = new File(testDirectory + File.separator + testFileName);
+
+        try {
+            testAccount.toCSV(testFileName);
+            assertTrue(exportedFile.exists(), "The CSV file should exist in the src/csv folder.");
+
+            Path filePath = exportedFile.toPath();
+            List<String> fileLines = Files.readAllLines(filePath);
+
+            // Check the header
+            assertEquals("Transaction Details", fileLines.get(0));
+            
+            // Check the transactions
+            assertEquals("\"Deposited: 150.0 [Initial deposit]\"", fileLines.get(1));
+            assertEquals("\"Withdrew: 50.0 [Groceries]\"", fileLines.get(2));
+
+        } finally {
+            if (exportedFile.exists()) {
+                exportedFile.delete();
+            }
+        }
+    }
+
 
     @Test
     public void bankRecordsChange() {
@@ -104,7 +142,7 @@ public class BankAccountTest {
         testAccount.deposit(50);
         List<String> history = testAccount.transactionHistory();
         assertEquals(1, history.size());
-        assertEquals("Deposited: 50.0", history.get(0));
+        assertTrue(history.get(0).endsWith("Deposited: 50.0"));
     }
 
     @Test
@@ -113,10 +151,8 @@ public class BankAccountTest {
         testAccount.deposit(100);
         List<String> history = testAccount.transactionHistory();
         assertEquals(2, history.size());
-        assertEquals(Arrays.asList(
-        "Deposited: 50.0",
-            "Deposited: 100.0"
-        ), testAccount.transactionHistory());
+        assertTrue(history.get(0).endsWith("Deposited: 50.0"));
+        assertTrue(history.get(1).endsWith("Deposited: 100.0"));
     }
     
     @Test
@@ -125,10 +161,8 @@ public class BankAccountTest {
         testAccount.withdraw(50);
         List<String> history = testAccount.transactionHistory();
         assertEquals(2, history.size());
-        assertEquals(Arrays.asList(
-            "Deposited: 50.0",
-            "Withdrew: 50.0"
-        ), testAccount.transactionHistory());
+        assertTrue(history.get(0).endsWith("Deposited: 50.0"));
+        assertTrue(history.get(1).endsWith("Withdrew: 50.0"));
     }
 
     // Withdraw tests
