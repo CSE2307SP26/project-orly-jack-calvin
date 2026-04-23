@@ -9,17 +9,30 @@ public class BankAccount {
     private String name;
     private boolean isOpen;
     private List<String> transactionHistory;
+<<<<<<< HEAD
     private boolean isFrozen = false;
     private boolean minimum;
     private double minAmount;
+=======
+    private boolean minimum;
+    private double minAmount;
+    private boolean isFrozen;
+>>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
 
     public BankAccount() {
         this.name = "Account1";
         this.balance = 0;
         this.transactionHistory = new ArrayList<>();
+<<<<<<< HEAD
         this.isOpen = true;
         this.minimum = false;
         this.minAmount = 0;
+=======
+        this.isOpen = true; 
+        this.minimum = false; // default for minimum is false, that there is no minimum
+        this.minAmount = 0;
+        this.isFrozen = false;
+>>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
     }
         
 
@@ -43,14 +56,23 @@ public class BankAccount {
             this.balance += amount;
             this.transactionHistory.add("Deposited: " + amount + " [" + note + "]");
         } else {
+<<<<<<< HEAD
             throw new IllegalArgumentException();
         }
     }
 
+=======
+             throw new IllegalArgumentException();
+        }
+    }
+
+
+>>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
     public void withdraw(double amount) {
         if (!isOpen || isFrozen) {
             throw new IllegalStateException("Account is closed or frozen");
         }
+<<<<<<< HEAD
         if (amount <= 0 || amount > balance) {
             throw new IllegalArgumentException();
         }
@@ -73,6 +95,30 @@ public class BankAccount {
         balance -= amount;
         this.transactionHistory.add("Withdrew: " + amount + " [" + note + "]");
     }
+=======
+        if (amount <= 0 || amount > balance) { // balance would go into negatives if you withdraw requested amount
+            throw new IllegalArgumentException();
+        }
+        else if (minimum && this.balance - amount < this.minAmount) { // balance would go below minimum if you withdraw requested amount
+            System.out.println("The amount you requested goes below your account minimum. We cannot proceed with this transaction.");
+        }
+        else {
+            balance -= amount;
+            this.transactionHistory.add("Withdrew: " + amount);
+        }
+    }
+
+    public void withdrawWithNote(double amount, String note) {
+        if (!isOpen || isFrozen) {
+            throw new IllegalStateException("Account is closed or frozen");
+        }
+        if (amount <= 0 || amount > balance) {
+            throw new IllegalArgumentException();
+        }
+        balance -= amount;
+        this.transactionHistory.add("Withdrew: " + amount + " [" + note + "]");
+    }
+>>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
 
     public void close() {
         this.isOpen = false;
@@ -134,4 +180,11 @@ public class BankAccount {
         this.minAmount = minimumAmount;
     }
 
+<<<<<<< HEAD
+=======
+    public void renameAccount(String newName) {
+        this.name = newName;
+    }
+
+>>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
 }

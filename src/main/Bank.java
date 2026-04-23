@@ -20,6 +20,10 @@ public class Bank {
         this.accountNumberCounter = 1;
         this.transactionHistory = new ArrayList<>();
         this.password = "1234";
+<<<<<<< HEAD
+=======
+
+>>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
     }
 
     public List<BankAccount> getAccountList() {
@@ -91,6 +95,7 @@ public class Bank {
         }
     }
 
+<<<<<<< HEAD
     public List<String> transactionHistory() {
         return this.transactionHistory;
     }
@@ -143,5 +148,27 @@ public class Bank {
         }
         account.setFrozen(false);
     }
+=======
+     public List<String> transactionHistory() {
+        return this.transactionHistory;
+    }
+
+    public double getBalance() {
+        return this.bankBalance;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public boolean checkPassword(String userPassword) {
+        return userPassword.equals(this.password);
+    }
+  
+    public void changeAccountName(BankAccount account, String newName) {
+        account.setName(newName);
+    }
+
+>>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
     
 }

@@ -22,7 +22,6 @@ public class BankAdministrator {
         }
         double interestDecimalRate = interestRatePercentage / 100.0;
         double interest = account.getBalance() * interestDecimalRate;
-
         if (interest > 0) {
             if (account.getBalance() + interest < 0) {
                 throw new IllegalArgumentException("Bank cannot pay interest at this time");
@@ -33,6 +32,7 @@ public class BankAdministrator {
     }
 
     public void deleteAccount(BankAccount account) {
+<<<<<<< HEAD
         bank.deleteAccount(account);
     }
 
@@ -42,6 +42,9 @@ public class BankAdministrator {
 
     public void unfreezeAccount(BankAccount account) {
         bank.unfreezeAccount(account);
+=======
+        account.close();
+>>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
     }
 
     public void toggleFreeze(BankAccount account) {
