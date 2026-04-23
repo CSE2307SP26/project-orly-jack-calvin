@@ -25,8 +25,11 @@ public class BankAccount {
         
 
     public void deposit(double amount) {
-        if (!isOpen || isFrozen) {
-            throw new IllegalStateException("Account is closed or frozen");
+        if (!isOpen) {
+            throw new IllegalStateException("Account is closed");
+        }
+        if (isFrozen) {
+            throw new IllegalArgumentException("Account is frozen");
         }
         if(amount > 0) {
             this.balance += amount;
@@ -37,8 +40,11 @@ public class BankAccount {
     }
 
     public void depositWithNote(double amount, String note) {
-        if (!isOpen || isFrozen) {
-            throw new IllegalStateException("Account is closed or frozen");
+        if (!isOpen) {
+            throw new IllegalStateException("Account is closed");
+        }
+        if (isFrozen) {
+            throw new IllegalArgumentException("Account is frozen");
         }
         if(amount > 0) {
             this.balance += amount;
@@ -50,9 +56,13 @@ public class BankAccount {
 
 
     public void withdraw(double amount) {
-        if (!isOpen || isFrozen) {
-            throw new IllegalStateException("Account is closed or frozen");
+        if (!isOpen) {
+            throw new IllegalStateException("Account is closed");
         }
+        if (isFrozen) {
+            throw new IllegalArgumentException("Account is frozen");
+        }
+        
         if (amount <= 0 || amount > balance) { // balance would go into negatives if you withdraw requested amount
             throw new IllegalArgumentException();
         }
@@ -66,8 +76,11 @@ public class BankAccount {
     }
 
     public void withdrawWithNote(double amount, String note) {
-        if (!isOpen || isFrozen) {
-            throw new IllegalStateException("Account is closed or frozen");
+        if (!isOpen) {
+            throw new IllegalStateException("Account is closed");
+        }
+        if (isFrozen) {
+            throw new IllegalArgumentException("Account is frozen");
         }
         if (amount <= 0 || amount > balance) {
             throw new IllegalArgumentException();

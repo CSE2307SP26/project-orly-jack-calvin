@@ -32,7 +32,15 @@ public class BankAdministrator {
     }
 
     public void deleteAccount(BankAccount account) {
-        account.close();
+        bank.deleteAccount(account);
+    }
+
+    public void freezeAccount(BankAccount account) {
+        bank.freezeAccount(account);
+    }
+
+    public void unfreezeAccount(BankAccount account) {
+        bank.unfreezeAccount(account);
     }
 
     public void toggleFreeze(BankAccount account) {

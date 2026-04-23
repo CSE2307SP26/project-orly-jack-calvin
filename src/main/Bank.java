@@ -111,5 +111,53 @@ public class Bank {
         account.setName(newName);
     }
 
+    /**
+     * Deletes an account from the bank.
+     * Account can only be deleted if it has a zero balance.
+     * @param account the BankAccount to delete
+     * @throws IllegalArgumentException if account is null, doesn't exist, or has non-zero balance
+     */
+    public void deleteAccount(BankAccount account) {
+        if (account == null) {
+            throw new IllegalArgumentException("Account cannot be null");
+        }
+        if (!accountList.contains(account)) {
+            throw new IllegalArgumentException("Account does not exist in this bank");
+        }
+        if (account.getBalance() != 0) {
+            throw new IllegalArgumentException("Cannot delete account with non-zero balance");
+        }
+        accountList.remove(account);
+    }
+
+    /**
+     * Freezes an account, preventing deposits and withdrawals.
+     * @param account the BankAccount to freeze
+     * @throws IllegalArgumentException if account is null or doesn't exist
+     */
+    public void freezeAccount(BankAccount account) {
+        if (account == null) {
+            throw new IllegalArgumentException("Account cannot be null");
+        }
+        if (!accountList.contains(account)) {
+            throw new IllegalArgumentException("Account does not exist in this bank");
+        }
+        account.setFrozen(true);
+    }
+
+    /**
+     * Unfreezes an account, allowing deposits and withdrawals.
+     * @param account the BankAccount to unfreeze
+     * @throws IllegalArgumentException if account is null or doesn't exist
+     */
+    public void unfreezeAccount(BankAccount account) {
+        if (account == null) {
+            throw new IllegalArgumentException("Account cannot be null");
+        }
+        if (!accountList.contains(account)) {
+            throw new IllegalArgumentException("Account does not exist in this bank");
+        }
+        account.setFrozen(false);
+    }
     
 }
