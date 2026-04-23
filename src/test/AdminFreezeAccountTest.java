@@ -1,6 +1,7 @@
 package test;
 
 import main.BankAccount;
+import main.Bank;
 import main.BankAdministrator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,12 +14,14 @@ import org.junit.jupiter.api.Test;
 
 public class AdminFreezeAccountTest {
 
+    private Bank testBank;
     private BankAdministrator admin;
     private BankAccount testAccount;
 
     @BeforeEach
     public void setup() {
-        this.admin = new BankAdministrator();
+        this.testBank = new Bank();
+        this.admin = new BankAdministrator(testBank);
         this.testAccount = new BankAccount();
     }
 

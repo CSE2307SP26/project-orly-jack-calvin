@@ -1,6 +1,7 @@
 package test;
 
 import main.BankAccount;
+import main.Bank;
 import main.BankAdministrator;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,8 +10,9 @@ public class BankAdministratorInterestTest {
 
     @Test
     void testAddInterest_validRate() {
+        Bank bank = new Bank();
         BankAccount account = new BankAccount();
-        BankAdministrator admin = new BankAdministrator();
+        BankAdministrator admin = new BankAdministrator(bank);
 
         account.deposit(100.0);
 
@@ -21,8 +23,9 @@ public class BankAdministratorInterestTest {
 
     @Test
     void testAddInterest_zeroRate() {
+        Bank bank = new Bank();
         BankAccount account = new BankAccount();
-        BankAdministrator admin = new BankAdministrator();
+        BankAdministrator admin = new BankAdministrator(bank);
 
         account.deposit(100.0);
 
@@ -33,8 +36,9 @@ public class BankAdministratorInterestTest {
 
     @Test
     void testAddInterest_highRate() {
+        Bank bank = new Bank();
         BankAccount account = new BankAccount();
-        BankAdministrator admin = new BankAdministrator();
+        BankAdministrator admin = new BankAdministrator(bank);
 
         account.deposit(200.0);
 
@@ -45,8 +49,9 @@ public class BankAdministratorInterestTest {
 
     @Test
     void testAddInterest_negativeRate() {
+        Bank bank = new Bank();
         BankAccount account = new BankAccount();
-        BankAdministrator admin = new BankAdministrator();
+        BankAdministrator admin = new BankAdministrator(bank);
 
         assertThrows(IllegalArgumentException.class, () -> {
             admin.addInterestPayment(account, -5.0);
@@ -55,8 +60,9 @@ public class BankAdministratorInterestTest {
 
     @Test
     void testAddInterest_over100Rate() {
+        Bank bank = new Bank();
         BankAccount account = new BankAccount();
-        BankAdministrator admin = new BankAdministrator();
+        BankAdministrator admin = new BankAdministrator(bank);
 
         assertThrows(IllegalArgumentException.class, () -> {
             admin.addInterestPayment(account, 150.0);

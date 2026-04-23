@@ -20,7 +20,7 @@ private static final int MAX_SELECTION = 11;
         this.bank = new Bank();
         this.userAccount = bank.getAccountList().get(0);
         this.keyboardInput = new Scanner(System.in);
-        this.admin = new BankAdministrator();
+        this.admin = new BankAdministrator(bank);
     
         this.mainMenu = true;
         this.adminDisplay = false;

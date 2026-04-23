@@ -10,6 +10,7 @@ public class Bank {
     private double bankBalance;
     private List<BankAccount> accountList;
     private List<String> transactionHistory;
+    private String password;
 
     public Bank() {
         this.defaultAccount = new BankAccount();
@@ -18,8 +19,9 @@ public class Bank {
         this.accountList.add(defaultAccount);
         this.accountNumberCounter = 1;
         this.transactionHistory = new ArrayList<>();
-
+        this.password = "1234";
     }
+
     public List<BankAccount> getAccountList() {
         return accountList;
     }
@@ -48,6 +50,24 @@ public class Bank {
         }
     }
 
+    public void depositFees(BankAccount account, double fee) {
+        if (fee > 0) {
+            this.bankBalance += fee;
+            addTransaction(account, fee, "Fee Collection");
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void payInterest(BankAccount account, double interest) {
+        if (interest > 0) {
+            this.bankBalance -= interest;
+            addTransaction(account, interest, "Interest Payment");
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
     public void transfer(BankAccount sender, BankAccount recipient, double amount) {
         if (amount > 0 && amount <= sender.getBalance()) {
             sender.withdraw(amount);
@@ -58,6 +78,10 @@ public class Bank {
         }
     }
 
+    public int getNumberOfAccounts() {
+        return accountNumberCounter;
+    }
+
     public void withdrawFromBank(BankAccount account, double amount) {
         if (amount > 0 && amount <= bankBalance) {
             this.bankBalance -= amount;
@@ -66,14 +90,58 @@ public class Bank {
             throw new IllegalArgumentException();
         }
     }
+
+    public List<String> transactionHistory() {
+        return this.transactionHistory;
+    }
+
+    public double getBalance() {
+        return this.bankBalance;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public boolean checkPassword(String userPassword) {
+        return userPassword.equals(this.password);
+    }
+
+    public void changeAccountName(BankAccount account, String newName) {
+        account.setName(newName);
+    }
+
     public void deleteAccount(BankAccount account) {
-    if (account == null) {
-        throw new IllegalArgumentException("Account cannot be null");
+        if (account == null) {
+            throw new IllegalArgumentException("Account cannot be null");
+        }
+        if (!accountList.contains(account)) {
+            throw new IllegalArgumentException("Account does not exist in this bank");
+        }
+        if (account.getBalance() != 0) {
+            throw new IllegalArgumentException("Cannot delete account with non-zero balance");
+        }
+        accountList.remove(account);
     }
-    if (account.getBalance() != 0) {
-        throw new IllegalArgumentException("Cannot delete account with non-zero balance");
+
+    public void freezeAccount(BankAccount account) {
+        if (account == null) {
+            throw new IllegalArgumentException("Account cannot be null");
+        }
+        if (!accountList.contains(account)) {
+            throw new IllegalArgumentException("Account does not exist in this bank");
+        }
+        account.setFrozen(true);
     }
-    accountList.remove(account);
-}
+
+    public void unfreezeAccount(BankAccount account) {
+        if (account == null) {
+            throw new IllegalArgumentException("Account cannot be null");
+        }
+        if (!accountList.contains(account)) {
+            throw new IllegalArgumentException("Account does not exist in this bank");
+        }
+        account.setFrozen(false);
+    }
     
 }

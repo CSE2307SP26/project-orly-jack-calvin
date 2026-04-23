@@ -10,18 +10,22 @@ public class BankAccount {
     private boolean isOpen;
     private List<String> transactionHistory;
     private boolean isFrozen = false;
+    private boolean minimum;
+    private double minAmount;
 
     public BankAccount() {
         this.name = "Account1";
         this.balance = 0;
         this.transactionHistory = new ArrayList<>();
-        this.isOpen = true; 
+        this.isOpen = true;
+        this.minimum = false;
+        this.minAmount = 0;
     }
         
 
     public void deposit(double amount) {
         if (!isOpen || isFrozen) {
-            throw new IllegalStateException("Account is closedor frozen");
+            throw new IllegalStateException("Account is closed or frozen");
         }
         if(amount > 0) {
             this.balance += amount;
@@ -30,18 +34,45 @@ public class BankAccount {
              throw new IllegalArgumentException();
         }
     }
+
+    public void depositWithNote(double amount, String note) {
+        if (!isOpen || isFrozen) {
+            throw new IllegalStateException("Account is closed or frozen");
+        }
+        if(amount > 0) {
+            this.balance += amount;
+            this.transactionHistory.add("Deposited: " + amount + " [" + note + "]");
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
     public void withdraw(double amount) {
         if (!isOpen || isFrozen) {
-            throw new IllegalStateException("Account is closedor frozen");
-    }
+            throw new IllegalStateException("Account is closed or frozen");
+        }
         if (amount <= 0 || amount > balance) {
             throw new IllegalArgumentException();
+        }
+        else if (minimum && this.balance - amount < this.minAmount) {
+            System.out.println("The amount you requested goes below your account minimum. We cannot proceed with this transaction.");
+        }
+        else {
+            balance -= amount;
+            this.transactionHistory.add("Withdrew: " + amount);
+        }
     }
-    balance -= amount;
-    this.transactionHistory.add("Withdrew: " + amount);
-}
 
-    
+    public void withdrawWithNote(double amount, String note) {
+        if (!isOpen || isFrozen) {
+            throw new IllegalStateException("Account is closed or frozen");
+        }
+        if (amount <= 0 || amount > balance) {
+            throw new IllegalArgumentException();
+        }
+        balance -= amount;
+        this.transactionHistory.add("Withdrew: " + amount + " [" + note + "]");
+    }
 
     public void close() {
         this.isOpen = false;
@@ -50,9 +81,10 @@ public class BankAccount {
     public void setFrozen(boolean frozen) {
         this.isFrozen = frozen;
     }
+
     public boolean isFrozen() {
-    return this.isFrozen;
-}
+        return this.isFrozen;
+    }
 
     public double getBalance() {
         return this.balance;
@@ -66,6 +98,10 @@ public class BankAccount {
         this.name = name;
     }
 
+    public void renameAccount(String newName) {
+        this.name = newName;
+    }
+
     public void transfer(BankAccount recipient, double amount) {
         if (isFrozen) {
             throw new IllegalStateException("Account is frozen");
@@ -77,6 +113,7 @@ public class BankAccount {
             throw new IllegalArgumentException();
         }
     }
+
     public List<String> transactionHistory() {
         return this.transactionHistory;
     }
@@ -90,7 +127,11 @@ public class BankAccount {
         }
         balance -= amount;
         this.transactionHistory.add("Admin withdrew: " + amount);
-
     }
-}
 
+    public void setMinimum(double minimumAmount) {
+        this.minimum = true;
+        this.minAmount = minimumAmount;
+    }
+
+}

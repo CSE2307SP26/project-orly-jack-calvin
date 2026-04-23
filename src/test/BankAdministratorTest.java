@@ -1,6 +1,7 @@
 package test;
 
 import main.BankAccount;
+import main.Bank;
 import main.BankAdministrator;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,8 +10,9 @@ public class BankAdministratorTest {
 
     @Test
     void testCollectFees_validFee() {
+        Bank bank = new Bank();
         BankAccount account = new BankAccount();
-        BankAdministrator admin = new BankAdministrator();
+        BankAdministrator admin = new BankAdministrator(bank);
 
         account.deposit(100.0); // starting balance
 
@@ -20,17 +22,15 @@ public class BankAdministratorTest {
     }
 
 
-@Test
-void testCollectFees_negativeFee() {
-    BankAccount account = new BankAccount();
-    BankAdministrator admin = new BankAdministrator();
+    @Test
+    void testCollectFees_negativeFee() {
+        Bank bank = new Bank();
+        BankAccount account = new BankAccount();
+        BankAdministrator admin = new BankAdministrator(bank);
 
-    assertThrows(IllegalArgumentException.class, () -> {
-        admin.collectFees(account, -10.0);
-    });
-}
-
-
-
+        assertThrows(IllegalArgumentException.class, () -> {
+            admin.collectFees(account, -10.0);
+        });
+    }
 
 }
