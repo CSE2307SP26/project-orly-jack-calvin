@@ -40,8 +40,6 @@ public class BankAdministrator {
     }
 
     public void viewAllTransactions() {
-        System.out.println("Transaction History:");
-        bank.transactionHistory().forEach(System.out::println);
-    }
-
-}
+        if (bank.transactionHistory().isEmpty()) {
+            System.out.println("No transactions yet.");
+        } else {

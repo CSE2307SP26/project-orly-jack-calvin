@@ -1,11 +1,12 @@
 package main;
 
 import java.util.Scanner;
+import java.util.List;
 
 public class MainMenu {
 
     private static final int EXIT_SELECTION = 12;
-    private static final int ADMIN_EXIT_SELECTION = 7;
+    private static final int ADMIN_EXIT_SELECTION = 9;
     private static final int MAIN_MENU_EXIT_SELECTION = 4;
     private static final int MAX_SELECTION = 12;
 
@@ -39,9 +40,10 @@ public class MainMenu {
         this.mainMenu = false;
         System.out.println();
         System.out.println("Welcome to the 237 Bank App!");
-        System.out.println("1. View Account");
-        System.out.println("2. Create New Account");
-        System.out.println("3. Administrator Login");
+        System.out.println("1. View account");
+        System.out.println("2. Create new account");
+        System.out.println("3. Administrator login");
+        System.out.println("-------------------");
         System.out.println("4. Exit the app");
     }
 
@@ -52,13 +54,16 @@ public class MainMenu {
         if (adminPasswordEntered || requestPassword()) {
             System.out.println();
             System.out.println("Administrator Portal");
-            System.out.println("1. View Bank Balance");
-            System.out.println("2. View Accounts");
-            System.out.println("3. View Transaction History");
-            System.out.println("4. Collect Fees");
-            System.out.println("5. Add Interest Payment");
-            System.out.println("6. Delete Account");
-            System.out.println("7. Freeze/Unfreeze Account");
+            System.out.println("1. View bank balance");
+            System.out.println("2. View accounts");
+            System.out.println("3. View transaction history");
+            System.out.println("4. Collect fees");
+            System.out.println("5. Add interest payment");
+            System.out.println("6. Delete account");
+            System.out.println("7. Freeze/unfreeze account");
+            System.out.println("-------------------");
+            System.out.println("8. Return to main menu");
+            System.out.println("9. Exit the app");
         } else {
             System.out.println("INCORRECT PASSWORD. Sending you back to main menu.");
             mainMenuDisplayOptions();
@@ -89,6 +94,15 @@ public class MainMenu {
                 break;
             case 7:
                 performToggleFreezeAccount();
+                break;
+            case 8:
+                this.mainMenu = true;
+                this.adminDisplay = false;
+                this.userDisplay = false;
+                break;
+            case 9:
+                System.out.println("Goodbye!");
+                System.exit(0);
                 break;
         }
     }
@@ -139,6 +153,7 @@ public class MainMenu {
         System.out.println("8. View accounts");
         System.out.println("9. Set account minimum");
         System.out.println("10. Rename account");
+        System.out.println("-------------------");
         System.out.println("11. Return to main menu");
         System.out.println("12. Exit the app");
     }
@@ -146,7 +161,7 @@ public class MainMenu {
     public int getUserSelection(int max) {
         int selection = -1;
         while(selection < 1 || selection > max) {
-            System.out.print("Please make a selection: ");
+            System.out.println("Please make a selection: ");
             selection = keyboardInput.nextInt();
         }
         return selection;
@@ -174,6 +189,10 @@ public class MainMenu {
                 break;
             case 7:
                 newAccount();
+                System.out.println("Created a new account.\n");
+                this.mainMenu = true;
+                this.adminDisplay = false;
+                this.userDisplay = false;
                 break;
             case 8:
                 viewAccounts();
@@ -258,8 +277,12 @@ public class MainMenu {
     }
 
     public void performTransactionHistory() {
-        System.out.println(userAccount.transactionHistory());
-        System.out.println();
+        if (userAccount.transactionHistory().isEmpty()) {
+            System.out.println("No transactions yet.");
+        } else {
+            System.out.println(userAccount.transactionHistory());
+            System.out.println();
+        }
     }
 
     public void newAccount() {
@@ -268,6 +291,7 @@ public class MainMenu {
     }
 
     public void viewAccounts() {
+        System.out.println("Accounts:");
         for (int i = 0; i < bank.getAccountList().size(); i++) {
             System.out.println(i+1 + ". " + bank.getAccountList().get(i).getName() + " - Balance: " + bank.getAccountList().get(i).getBalance());
         }
@@ -291,34 +315,49 @@ public class MainMenu {
     }
 
     public void performTransfer() {
-        if (bank.getAccountList().size() < 2) {
+        List<BankAccount> accounts = bank.getAccountList();
+
+        if (accounts.size() < 2) {
             System.out.println("You need at least two accounts to perform a transfer.");
             return;
         }
-        BankAccount recipient = null;
-        while(recipient == null) {
-            System.out.println("Enter the number of the account you would like to transfer to: ");
-            for (int i = 0; i < bank.getAccountList().size(); i++) {
-                System.out.println(i+1 + ". " + bank.getAccountList().get(i).getName());
-            }
-            int recipientIndex = keyboardInput.nextInt() - 1;
-            if (recipientIndex >= 0 && recipientIndex < bank.getAccountList().size()) {
-                recipient = bank.getAccountList().get(recipientIndex);
-                if (recipient == userAccount) {
-                    System.out.println("You cannot transfer to the same account. Please select a different account.");
-                    recipient = null;
-                }
-            }
-        }
-        double transferAmount = -1;
-        while(transferAmount < 0) {
-            System.out.print("How much would you like to transfer: ");
-            transferAmount = keyboardInput.nextDouble();
-        }
 
-        bank.transfer(userAccount, recipient, transferAmount);
-        System.out.println();
+        BankAccount recipient = selectRecipient(accounts);
+        double amount = promptForAmount();
+
+        bank.transfer(userAccount, recipient, amount);
+        System.out.println("\nTransfer complete.");
     }
+
+    private BankAccount selectRecipient(List<BankAccount> accounts) {
+        while (true) {
+            System.out.println("Select a recipient:");
+            for (int i = 0; i < accounts.size(); i++) {
+                System.out.printf("%d. %s%n", i + 1, accounts.get(i).getName());
+            }
+
+            int choice = keyboardInput.nextInt() - 1;
+
+            if (choice < 0 || choice >= accounts.size()) {
+                System.out.println("Invalid selection.");
+            } else if (accounts.get(choice).equals(userAccount)) {
+                System.out.println("You cannot transfer to the same account.");
+            } else {
+                return accounts.get(choice);
+            }
+        }
+    }
+
+    private double promptForAmount() {
+        double amount = -1;
+        while (amount < 0) {
+            System.out.print("Enter transfer amount: ");
+            amount = keyboardInput.nextDouble();
+        }
+        return amount;
+    }
+
+    
 
     public void performDeleteAccount() {
         System.out.println("Select account to delete: ");
@@ -396,36 +435,3 @@ public class MainMenu {
     }
 
     public void performRenameAccount() {
-        System.out.print("Enter name you want to give your account: ");
-        String newName = keyboardInput.next();
-        userAccount.renameAccount(newName);
-        bank.changeAccountName(userAccount, newName);
-    }
-
-    public void run() {
-        int selection = -1;
-        while(selection != EXIT_SELECTION) {
-            if (mainMenu) {
-                mainMenuDisplayOptions();
-                selection = getUserSelection(MAIN_MENU_EXIT_SELECTION);
-                processMenuInput(selection);
-            }
-            else if (userDisplay) {
-                displayOptions();
-                selection = getUserSelection(MAX_SELECTION);
-                processInput(selection);
-            }
-            else if (adminDisplay) {
-                administratorDisplayOptions();
-                selection = getUserSelection(ADMIN_EXIT_SELECTION);
-                processAdministratorInput(selection);
-            }
-        }
-    }
-
-    public static void main(String[] args) {
-        MainMenu bankApp = new MainMenu();
-        bankApp.run();
-    }
-
-}
