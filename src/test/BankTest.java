@@ -1,17 +1,16 @@
 package test;
 
-import main.BankAccount;
-import main.Bank;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class AdditionalAccountTest {
+import main.Bank;
+import main.BankAccount;
 
-   private Bank testBank;
+public class BankTest {
+  
+  private Bank testBank;
 
    @BeforeEach
    public void setup() {
@@ -35,4 +34,7 @@ public class AdditionalAccountTest {
       additionalAccount.deposit(50);
       assertEquals(50, additionalAccount.getBalance(), 0.01);
    }
+   
 }
+
+
