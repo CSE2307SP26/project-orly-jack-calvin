@@ -32,7 +32,6 @@ public class BankAdministrator {
     }
 
     public void deleteAccount(BankAccount account) {
-<<<<<<< HEAD
         bank.deleteAccount(account);
     }
 
@@ -42,9 +41,6 @@ public class BankAdministrator {
 
     public void unfreezeAccount(BankAccount account) {
         bank.unfreezeAccount(account);
-=======
-        account.close();
->>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
     }
 
     public void toggleFreeze(BankAccount account) {
@@ -55,5 +51,4 @@ public class BankAdministrator {
         System.out.println("Transaction History:");
         bank.transactionHistory().forEach(System.out::println);
     }
-
 }

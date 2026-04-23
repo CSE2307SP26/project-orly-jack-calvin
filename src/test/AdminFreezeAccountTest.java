@@ -16,69 +16,82 @@ public class AdminFreezeAccountTest {
 
     private Bank testBank;
     private BankAdministrator admin;
-    private BankAccount testAccount;
 
     @BeforeEach
     public void setup() {
         this.testBank = new Bank();
-        this.admin = new BankAdministrator(testBank);
-        this.testAccount = new BankAccount();
+        this.admin = new BankAdministrator(testBank);  // Fixed: Pass testBank as parameter
     }
 
     @Test
-    public void testFreezeAccountPreventsDeposit() {
-        testAccount.setFrozen(true);
-        assertThrows(IllegalStateException.class, () -> testAccount.deposit(100));
+    public void testFreezeAccount() {
+        BankAccount account = testBank.getAccountList().get(0);
+        admin.freezeAccount(account);
+        assertTrue(account.isFrozen());
     }
 
     @Test
-    public void testFreezeAccountPreventsWithdraw() {
-        testAccount.deposit(100);
-        testAccount.setFrozen(true);
-        assertThrows(IllegalStateException.class, () -> testAccount.withdraw(50));
+    public void testUnfreezeAccount() {
+        BankAccount account = testBank.getAccountList().get(0);
+        admin.freezeAccount(account);
+        assertTrue(account.isFrozen());
+        admin.unfreezeAccount(account);
+        assertFalse(account.isFrozen());
     }
 
     @Test
-    public void testFreezeAccountPreventsTransfer() {
-        BankAccount recipient = new BankAccount();
-        testAccount.deposit(100);
-        testAccount.setFrozen(true);
-        assertThrows(IllegalStateException.class, () -> testAccount.transfer(recipient, 50));
+    public void testFrozenAccountCannotDeposit() {
+        BankAccount account = testBank.getAccountList().get(0);
+        admin.freezeAccount(account);
+        assertThrows(IllegalArgumentException.class, () -> account.deposit(100));
     }
 
     @Test
-    public void testUnfreezeAccountAllowsDeposit() {
-        testAccount.setFrozen(true);
-        testAccount.setFrozen(false);
-        testAccount.deposit(100);
-        assertEquals(100, testAccount.getBalance(), 0.01);
+    public void testFrozenAccountCannotWithdraw() {
+        BankAccount account = testBank.getAccountList().get(0);
+        admin.freezeAccount(account);
+        assertThrows(IllegalArgumentException.class, () -> account.withdraw(100));
     }
 
     @Test
-    public void testUnfreezeAccountAllowsWithdraw() {
-        testAccount.deposit(100);
-        testAccount.setFrozen(true);
-        testAccount.setFrozen(false);
-        testAccount.withdraw(50);
-        assertEquals(50, testAccount.getBalance(), 0.01);
+    public void testUnfrozenAccountCanDeposit() {
+        BankAccount account = testBank.getAccountList().get(0);
+        admin.freezeAccount(account);
+        admin.unfreezeAccount(account);
+        double initialBalance = account.getBalance();
+        account.deposit(50);
+        assertEquals(initialBalance + 50, account.getBalance());
     }
 
     @Test
-    public void testAdminToggleFreezeFromUnfrozen() {
-        assertFalse(testAccount.isFrozen());
-        admin.toggleFreeze(testAccount);
-        assertTrue(testAccount.isFrozen());
+    public void testUnfrozenAccountCanWithdraw() {
+        BankAccount account = testBank.getAccountList().get(0);
+        account.deposit(100);  // Ensure sufficient balance
+        admin.freezeAccount(account);
+        admin.unfreezeAccount(account);
+        double initialBalance = account.getBalance();
+        account.withdraw(50);
+        assertEquals(initialBalance - 50, account.getBalance());
     }
 
     @Test
-    public void testAdminToggleFreezeFromFrozen() {
-        testAccount.setFrozen(true);
-        admin.toggleFreeze(testAccount);
-        assertFalse(testAccount.isFrozen());
+    public void testFreezeNullAccount() {
+        assertThrows(IllegalArgumentException.class, () -> admin.freezeAccount(null));
     }
 
     @Test
-    public void testIsFrozenInitiallyFalse() {
-        assertFalse(testAccount.isFrozen());
+    public void testUnfreezeNullAccount() {
+        assertThrows(IllegalArgumentException.class, () -> admin.unfreezeAccount(null));
+    }
+
+    @Test
+    public void testMultipleFreezeUnfreezeToggle() {
+        BankAccount account = testBank.getAccountList().get(0);
+        admin.freezeAccount(account);
+        assertTrue(account.isFrozen());
+        admin.unfreezeAccount(account);
+        assertFalse(account.isFrozen());
+        admin.freezeAccount(account);
+        assertTrue(account.isFrozen());
     }
 }

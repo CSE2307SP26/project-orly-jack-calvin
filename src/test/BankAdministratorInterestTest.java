@@ -1,14 +1,14 @@
 package test;
 
+import main.Bank;
 import main.BankAccount;
 import main.Bank;
 import main.BankAdministrator;
-import main.Bank;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BankAdministratorInterestTest {
-
+    
     @Test
     void testAddInterest_validRate() {
         Bank bank = new Bank();
@@ -18,11 +18,8 @@ public class BankAdministratorInterestTest {
         BankAccount account = bank.getAccountList().get(0);
 >>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
         BankAdministrator admin = new BankAdministrator(bank);
-
         account.deposit(100.0);
-
-        admin.addInterestPayment(account, 10.0); // 10% interest
-
+        admin.addInterestPayment(account, 10.0);
         assertEquals(110.0, account.getBalance(), 0.001);
     }
 
@@ -35,11 +32,8 @@ public class BankAdministratorInterestTest {
         BankAccount account = bank.getAccountList().get(0);
 >>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
         BankAdministrator admin = new BankAdministrator(bank);
-
         account.deposit(100.0);
-
         admin.addInterestPayment(account, 0.0);
-
         assertEquals(100.0, account.getBalance(), 0.001);
     }
 
@@ -52,11 +46,8 @@ public class BankAdministratorInterestTest {
         BankAccount account = bank.getAccountList().get(0);
 >>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
         BankAdministrator admin = new BankAdministrator(bank);
-
         account.deposit(200.0);
-
-        admin.addInterestPayment(account, 50.0); // 50% interest
-
+        admin.addInterestPayment(account, 50.0);
         assertEquals(300.0, account.getBalance(), 0.001);
     }
 
@@ -69,7 +60,6 @@ public class BankAdministratorInterestTest {
         BankAccount account = bank.getAccountList().get(0);
 >>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
         BankAdministrator admin = new BankAdministrator(bank);
-
         assertThrows(IllegalArgumentException.class, () -> {
             admin.addInterestPayment(account, -5.0);
         });
@@ -84,9 +74,9 @@ public class BankAdministratorInterestTest {
         BankAccount account = bank.getAccountList().get(0);
 >>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
         BankAdministrator admin = new BankAdministrator(bank);
-
         assertThrows(IllegalArgumentException.class, () -> {
             admin.addInterestPayment(account, 150.0);
         });
     }
+    
 }

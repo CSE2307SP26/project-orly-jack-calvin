@@ -20,10 +20,6 @@ public class Bank {
         this.accountNumberCounter = 1;
         this.transactionHistory = new ArrayList<>();
         this.password = "1234";
-<<<<<<< HEAD
-=======
-
->>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
     }
 
     public List<BankAccount> getAccountList() {
@@ -95,7 +91,6 @@ public class Bank {
         }
     }
 
-<<<<<<< HEAD
     public List<String> transactionHistory() {
         return this.transactionHistory;
     }
@@ -149,26 +144,54 @@ public class Bank {
         account.setFrozen(false);
     }
 =======
-     public List<String> transactionHistory() {
-        return this.transactionHistory;
+    /**
+     * Deletes an account from the bank.
+     * Account can only be deleted if it has a zero balance.
+     * @param account the BankAccount to delete
+     * @throws IllegalArgumentException if account is null, doesn't exist, or has non-zero balance
+     */
+    public void deleteAccount(BankAccount account) {
+        if (account == null) {
+            throw new IllegalArgumentException("Account cannot be null");
+        }
+        if (!accountList.contains(account)) {
+            throw new IllegalArgumentException("Account does not exist in this bank");
+        }
+        if (account.getBalance() != 0) {
+            throw new IllegalArgumentException("Cannot delete account with non-zero balance");
+        }
+        accountList.remove(account);
     }
 
-    public double getBalance() {
-        return this.bankBalance;
+    /**
+     * Freezes an account, preventing deposits and withdrawals.
+     * @param account the BankAccount to freeze
+     * @throws IllegalArgumentException if account is null or doesn't exist
+     */
+    public void freezeAccount(BankAccount account) {
+        if (account == null) {
+            throw new IllegalArgumentException("Account cannot be null");
+        }
+        if (!accountList.contains(account)) {
+            throw new IllegalArgumentException("Account does not exist in this bank");
+        }
+        account.setFrozen(true);
     }
 
-    public String getPassword() {
-        return this.password;
+    /**
+     * Unfreezes an account, allowing deposits and withdrawals.
+     * @param account the BankAccount to unfreeze
+     * @throws IllegalArgumentException if account is null or doesn't exist
+     */
+    public void unfreezeAccount(BankAccount account) {
+        if (account == null) {
+            throw new IllegalArgumentException("Account cannot be null");
+        }
+        if (!accountList.contains(account)) {
+            throw new IllegalArgumentException("Account does not exist in this bank");
+        }
+        account.setFrozen(false);
     }
 
-    public boolean checkPassword(String userPassword) {
-        return userPassword.equals(this.password);
-    }
-  
-    public void changeAccountName(BankAccount account, String newName) {
-        account.setName(newName);
-    }
-
->>>>>>> 59c4c9e3bd18edb4e3c300747583273f7fd74cc7
     
 }
