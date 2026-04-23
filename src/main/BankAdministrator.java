@@ -51,3 +51,9 @@ public class BankAdministrator {
         if (bank.transactionHistory().isEmpty()) {
             System.out.println("No transactions yet.");
         } else {
+            System.out.println("Transaction History:");
+            bank.transactionHistory().forEach(System.out::println);
+        }
+    }
+
+}
