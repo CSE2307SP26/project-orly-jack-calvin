@@ -5,6 +5,8 @@ import java.util.List;
 import java.io.FileWriter; 
 import java.io.IOException; 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class BankAccount {
 
@@ -50,6 +52,12 @@ public class BankAccount {
         }
     }
 
+    private String getCurrentTimestamp() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return "[" + now.format(formatter) + "] ";
+    }
+
     public void deposit(double amount) {
         if (!isOpen) {
             throw new IllegalStateException("Account is closed");
@@ -59,7 +67,7 @@ public class BankAccount {
         }
         if(amount > 0) {
             this.balance += amount;
-            this.transactionHistory.add("Deposited: " + amount);
+            this.transactionHistory.add(getCurrentTimestamp() + " Deposited: " + amount);
         } else {
              throw new IllegalArgumentException();
         }
@@ -74,7 +82,7 @@ public class BankAccount {
         }
         if(amount > 0) {
             this.balance += amount;
-            this.transactionHistory.add("Deposited: " + amount + " [" + note + "]");
+            this.transactionHistory.add(getCurrentTimestamp()+ " Deposited: " + amount + " [" + note + "]");
         } else {
              throw new IllegalArgumentException();
         }
@@ -97,7 +105,7 @@ public class BankAccount {
         }
         else {
             balance -= amount;
-            this.transactionHistory.add("Withdrew: " + amount);
+            this.transactionHistory.add(getCurrentTimestamp() + " Withdrew: " + amount);
         }
     }
 
@@ -112,7 +120,7 @@ public class BankAccount {
             throw new IllegalArgumentException();
         }
         balance -= amount;
-        this.transactionHistory.add("Withdrew: " + amount + " [" + note + "]");
+        this.transactionHistory.add(getCurrentTimestamp() + " Withdrew: " + amount + " [" + note + "]");
     }
 
     public void close() {
@@ -163,7 +171,7 @@ public class BankAccount {
             throw new IllegalArgumentException();
         }
         balance -= amount;
-        this.transactionHistory.add("Admin withdrew: " + amount);
+        this.transactionHistory.add(getCurrentTimestamp() + " Admin withdrew: " + amount);
     }
 
     public void setMinimum(double minimumAmount) {
