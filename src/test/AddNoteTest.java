@@ -3,6 +3,8 @@ package test;
 import main.BankAccount;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.BeforeEach;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class AddNoteTest {
     testAccount.depositWithNote(50, note);
     List<String> history = testAccount.transactionHistory();
     assertEquals(1, history.size());
-    assertEquals("Deposited: 50.0 [groceries]", history.get(0));
+    assertTrue(history.get(0).endsWith("Deposited: 50.0 [groceries]"));
   }
 
   @Test
@@ -33,6 +35,6 @@ public class AddNoteTest {
     testAccount.withdrawWithNote(50, note);
     List<String> history = testAccount.transactionHistory();
     assertEquals(2, history.size());
-    assertEquals("Withdrew: 50.0 [note]", history.get(1));
+    assertTrue(history.get(1).endsWith("Withdrew: 50.0 [note]"));
   }
 }

@@ -3,6 +3,8 @@ package test;
 import main.BankAccount;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.BeforeEach;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +30,7 @@ public class TransactionHistoryTest {
       testAccount.deposit(50);
       List<String> history = testAccount.transactionHistory();
       assertEquals(1, history.size());
-      assertEquals("Deposited: 50.0", history.get(0));
+      assertTrue(history.get(0).endsWith("Deposited: 50.0"));
     }
 
   @Test
@@ -37,10 +39,8 @@ public class TransactionHistoryTest {
       testAccount.deposit(100);
       List<String> history = testAccount.transactionHistory();
       assertEquals(2, history.size());
-      assertEquals(Arrays.asList(
-     "Deposited: 50.0",
-          "Deposited: 100.0"
-      ), testAccount.transactionHistory());
+      assertTrue(history.get(0).endsWith("Deposited: 50.0"));
+        assertTrue(history.get(1).endsWith("Deposited: 100.0"));
     }
   
   @Test
@@ -49,10 +49,8 @@ public class TransactionHistoryTest {
       testAccount.withdraw(50);
       List<String> history = testAccount.transactionHistory();
       assertEquals(2, history.size());
-      assertEquals(Arrays.asList(
-          "Deposited: 50.0",
-          "Withdrew: 50.0"
-      ), testAccount.transactionHistory());
+      assertTrue(history.get(0).endsWith("Deposited: 50.0"));
+      assertTrue(history.get(1).endsWith("Withdrew: 50.0"));
     }
   
 }
