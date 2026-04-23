@@ -7,6 +7,7 @@ import main.BankAdministrator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ public class AdminDeleteAccountTest {
     @BeforeEach
     public void setup() {
         this.testBank = new Bank();
-        this.admin = new BankAdministrator();
+        this.admin = new BankAdministrator(testBank);  // Fixed: Pass testBank as parameter
     }
 
     @Test
@@ -45,7 +46,8 @@ public class AdminDeleteAccountTest {
     public void testAdminDeleteAccountClosesIt() {
         BankAccount account = testBank.getAccountList().get(0);
         admin.deleteAccount(account);
-        assertEquals(false, account.getBalance() >= 0);
+        // Verify the account is closed (removed from the bank's account list)
+        assertFalse(testBank.getAccountList().contains(account));
     }
 
     @Test
