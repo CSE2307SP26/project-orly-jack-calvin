@@ -5,10 +5,10 @@ import java.util.List;
 
 public class MainMenu {
 
-    private static final int EXIT_SELECTION = 12;
+    private static final int EXIT_SELECTION = 13;
     private static final int ADMIN_EXIT_SELECTION = 9;
     private static final int MAIN_MENU_EXIT_SELECTION = 4;
-    private static final int MAX_SELECTION = 12;
+    private static final int MAX_SELECTION = 13;
 
     private Bank bank;
     private BankAccount userAccount;
@@ -153,9 +153,10 @@ public class MainMenu {
         System.out.println("8. View accounts");
         System.out.println("9. Set account minimum");
         System.out.println("10. Rename account");
+        System.out.println("11. Export transactions to CSV");
         System.out.println("-------------------");
-        System.out.println("11. Return to main menu");
-        System.out.println("12. Exit the app");
+        System.out.println("12. Return to main menu");
+        System.out.println("13. Exit the app");
     }
 
     public int getUserSelection(int max) {
@@ -204,11 +205,15 @@ public class MainMenu {
                 performRenameAccount();
                 break;
             case 11:
+                String fileName = userAccount.getName() + "_transactions.csv";
+                userAccount.toCSV(fileName);
+                break;
+            case 12:
                 this.mainMenu = true;
                 this.adminDisplay = false;
                 this.userDisplay = false;
                 break;
-            case 12:
+            case 13:
                 System.out.println("Goodbye!"); 
                 System.exit(0);
                 break;

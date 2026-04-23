@@ -2,6 +2,9 @@ package main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.FileWriter; 
+import java.io.IOException; 
+import java.io.File;
 
 public class BankAccount {
 
@@ -12,6 +15,7 @@ public class BankAccount {
     private boolean minimum;
     private double minAmount;
     private boolean isFrozen;
+    
 
     public BankAccount() {
         this.name = "Account1";
@@ -22,7 +26,29 @@ public class BankAccount {
         this.minAmount = 0;
         this.isFrozen = false;
     }
-        
+    
+    public void toCSV(String fileName) {
+        String directoryPath = "src/csv";
+        File directory = new File(directoryPath);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        String filePath = directoryPath + File.separator+ fileName;
+        try (FileWriter writer = new FileWriter(filePath)) {
+            
+            writer.append("Transaction Details\n");
+            
+            
+            for (String transaction : transactionHistory) {
+                // wrap the string in quotes in case the user's note contains commas
+                writer.append("\"").append(transaction).append("\"\n");
+            }
+            System.out.println("Success! Transactions exported to " + fileName);
+            System.out.println("File path: " + System.getProperty("user.dir") + File.separator + fileName);
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing the CSV: " + e.getMessage());
+        }
+    }
 
     public void deposit(double amount) {
         if (!isOpen) {
